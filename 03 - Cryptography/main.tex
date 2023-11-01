@@ -1,0 +1,1848 @@
+\documentclass[12pt,oneside,a4paper]{book}
+\usepackage[%
+  a4paper,%
+  left = 20mm,%
+  right = 20mm,%
+  textwidth = 178mm,%
+  top = 40mm,%
+  bottom = 30mm,%
+  %heightrounded,%
+  headheight=70pt,%
+  headsep=25pt,%
+]{geometry}
+\usepackage{graphicx}
+\usepackage[sfdefault,light]{FiraSans}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    allcolors  = link-blue, 
+}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{color,colortbl}
+
+\definecolor{link-blue}{RGB}{6,69,173}
+\definecolor{dark-green}{RGB}{52,133,62}
+\definecolor{light-blue}{RGB}{127,180,240}
+\definecolor{dark-blue}{RGB}{72,120,224}
+\definecolor{heading-grey}{RGB}{128,128,128}
+\definecolor{heading2-grey}{RGB}{200,200,200}
+\definecolor{Critical}{RGB}{192,0,0}
+\definecolor{High}{RGB}{255,0,0}
+\definecolor{Medium}{RGB}{255,192,0}
+\definecolor{Low}{RGB}{255,255,0}
+\definecolor{Informational}{RGB}{94,185,255}
+
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{array,booktabs}
+\usepackage{fancyhdr}
+\renewcommand{\footrulewidth}{0.2pt}
+\renewcommand{\headrulewidth}{0.2pt}
+\fancyfoot{}
+\fancyhead{}
+\fancyfoot[C]{Confidential}
+\fancypagestyle{plain}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey} \\ Información Confidencial \\ (\href{https://keepcoding.io}{keepcoding.io})}
+    \fancyhead[R]{\includegraphics[width=1.5cm]{img/kp1.png}}
+}
+\fancypagestyle{fancy}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey}{ Información Confidencial \\ (\hyperlink{https://keepcoding.io}{keepcoding.io})}}
+    \fancyhead{}
+}
+\thispagestyle{fancy}\pagestyle{plain}
+
+\newcommand{\email}[1]{\href{mailto://#1}{#1}}
+\newcommand{\newchapter}[1]{{\section*{#1}
+\addcontentsline{toc}{chapter}{#1}}}
+\newcommand{\newsection}[1]{{\subsection*{#1}
+\addcontentsline{toc}{section}{#1}}}
+\newcommand{\newsubsection}[1]{{\subsubsection*{#1}
+\addcontentsline{toc}{subsection}{#1}}}
+\usepackage[skip=10pt plus1pt, indent=0pt]{parskip}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\makeatletter
+\renewcommand\tableofcontents{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    \if@restonecol\twocolumn\fi
+    }
+\makeatother
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\huge\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\Large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\large\bfseries}{\thesubsubsection}{1em}{}
+
+% \titleformat{command}[shape]{format}{label}{sep}{before}[after]
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+
+\titlespacing{\section}{0pt}{1em}{0.5em}
+\titlespacing{\subsection}{0pt}{0em}{0.25em}
+
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+\def\projectno{897-19}
+
+
+\begin{document}
+
+\renewcommand{\headrulewidth}{0pt}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           BEGIN TITLE PAGE          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{titlepage}
+   \thispagestyle{fancy}
+   \begin{center}
+        \vspace{5em}
+   
+        \centering\includegraphics[width=12cm]{img/kp2.png}
+
+        \vspace{5em}
+
+        \huge{\textbf{Práctica de módulo}}
+
+        \vspace{2em}
+        
+        \huge{\textbf{Ejercicios de Criptografía \\}}
+        
+        \vspace{7em}
+
+        \Large{por Javier González Espinoza}
+
+        \vspace{7em}
+        
+   \end{center}
+
+    \normalsize{}
+    \normalsize{Date: \today \\
+     Módulo: Criptografía \\
+     Profesor: Felipe Rodríguez Fonte}
+    
+\end{titlepage}
+
+\renewcommand{\headrulewidth}{0.2pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           END TITLE PAGE           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%         BEGIN CONTENTS        %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 1 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{I.  Objetivo y detalles de la práctica}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% OBJETIVOS %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\phantomsection
+\newsection{1.  Objetivo}
+
+\vspace{1em}
+
+\hspace{20pt}
+El objetivo del presente informe es documentar la información obtenida tras responder un conjunto de preguntas y/o ejercicios relacionados con la materia impartida en el actual módulo. Esto con el fin de demostrar que el alumno es capaz de adquirir conocimientos relacionados con la criptografía y aplicarlos en un entorno de práctica.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% DETALLES %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\phantomsection
+\newsection{2. Detalles de la práctica}
+
+\vspace{1em}
+
+\hspace{20pt}
+En esta práctica el alumno aplicará las técnicas vistas durante las clases y utilizará las diferentes herramientas con el fin de dar solución a los problemas planteados en esta.
+
+\vspace{1em}
+
+\hspace{20pt}
+Cualquier contraseña que sea necesaria usar durante el desarrollo de este trabajo,
+desde el punto de vista del uso de las herramientas postuladas en clases, tendrá un valor
+de 123456.
+
+\vspace{1em}
+
+\hspace{20pt}
+El código escrito para la resolución de los problemas se debe entregar en archivos separados, pero junto al informe.
+
+\vspace{1em}
+
+\hspace{20pt}
+Se valorará el proceso de razonamiento aunque no se llegue a resolver completamente
+los problemas. Si el código no funciona, pero se explica detalladamente la intención se
+valorará positivamente.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 2 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{II.  Ejercicios}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 1. Ejercicio 1 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\phantomsection
+\newsection{1.  Ejercicio 1}
+
+\vspace{2em}
+
+Tenemos un sistema que usa claves de 16 bytes. Por razones de seguridad vamos a proteger
+la clave de tal forma que ninguna persona tenga acceso directamente a la clave. Por ello,
+vamos a realizar un proceso de disociación de la misma, en el cuál tendremos, una clave fija en código, la cual, sólo el desarrollador tendrá acceso, y otra parte en un fichero de
+propiedades que rellenará el Key Manager. La clave final se generará por código, realizando
+un XOR entre la que se encuentra en el properties y en el código.
+
+\vspace{1em}
+
+La clave fija en código es \textit{B1EF2ACFE2BAEEFF}, mientras que en desarrollo sabemos que la clave final (en memoria) es \textit{91BA13BA21AABB12}. ¿Qué valor ha puesto el Key Manager en properties para forzar dicha clave final?
+
+\vspace{1em}
+
+La clave fija, recordemos es \textit{B1EF2ACFE2BAEEFF}, mientras que en producción sabemos que la parte dinámica que se modifica en los ficheros de propiedades es \textit{B98A15BA31AEBB3F}. ¿Qué clave será con la que se trabaje en memoria?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Debido a las propiedades conmutativas y asociativas que presenta la operación XOR, se determina que el orden de los factores no altera el producto final, por lo que para obtener la clave del Key Manager perfectamente se puede operar la clave fija con la clave final.
+
+\vspace{1em}
+
+\begin{center}
+    Clave Fija \textbf{(XOR)} Clave Final = Clave Key Manager
+\end{center}
+
+\vspace{1em}
+
+Para realizar este cálculo se utiliza el siguiente script escrito en bash:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/ej1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 1: Código bash para operatoria XOR.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El script anterior toma dos cadenas de números ingresados por consola en formato hexadecimal y realiza una operación XOR entre cada par de dígitos pertenecientes a estas. Finalmente, por consola entrega el resultado final como un tercer número hexadecimal.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 2: Cálculo XOR para clave Key Manager.
+\end{center}
+
+\vspace{2em}
+
+Así, la clave del Key Manager es \textit{20553975C31055ED}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Por otro lado, para el caso de producción, la clave con la que se trabajará en memoria es \textit{08653F75D31455C0}, la cual se muestra en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 3: Cálculo XOR para clave en memoria.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 2. Ejercicio 2 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{2. Ejercicio 2}
+
+\vspace{2em}
+
+Dada la clave con etiqueta \textit{“cifrado-sim-aes-256”} que contiene el keystore. El iv estará compuesto por el hexadecimal correspondiente a ceros binarios (“00”). Se requiere obtener el dato en claro correspondiente al siguiente dato cifrado:
+
+\vspace{1em}
+
+\textit{TQ9SOMKc6aFS9SlxhfK9wT18UXpPCd505Xf5J/5nLI7Of/o0QKIWXg3nu1RRz4QWElezdrLAD5LO4}
+\newline
+\textit{USt3aB/i50nvvJbBiG+le1ZhpR84oI=}
+
+\vspace{1em}
+
+Para este caso, se ha usado un AES/CBC/PKCS7. Si lo desciframos, ¿qué obtenemos?
+¿Qué ocurre si decidimos cambiar el padding a x923 en el descifrado?
+¿Cuánto padding se ha añadido en el cifrado?
+
+\vspace{1em}
+
+Se valorará positivamente, obtener el dato de la clave desde el keystore mediante
+codificación en Python (u otro lenguaje).
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se plantea que el texto en claro es:
+
+\vspace{1em}
+
+\textit{TQ9SOMKc6aFS9SlxhfK9wT18UXpPCd505Xf5J/5nLI7Of/o0QKIWXg3nu1RRz4QWElezdrLAD5LO4}
+\newline
+\textit{USt3aB/i50nvvJbBiG+le1ZhpR84oI=}
+
+\vspace{1em}
+
+que la clave cifrada presente en KeyStore es:
+
+\vspace{1em}
+
+\begin{center}
+    \textit{A2CFF885901A5449E9C448BA5B948A8C4EE377152B3F1ACFA0148FB3A426DB72}
+\end{center}
+
+\vspace{1em}
+
+y que el iv está compuesto por los ceros binarios en hexadecimal. Esto quiere decir, que para este modo de operación, el iv correponderá a 16 bytes de ceros en hexadecimal, o sea 32 ceros hexadecimales.
+
+\vspace{1em}
+
+\begin{center}
+    \textit{00000000000000000000000000000000}
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej2-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 4: Código ejecución en python.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej2-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 5: Output por consola tras ejecución del código.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Como se observa en la Fig. 3, el texto descifrado es:
+
+\vspace{1em}
+
+\begin{center}
+    \textit{Esto es un cifrado en bloque típico. Recuerda, vas por buen camino. Ánimo.}
+\end{center}
+
+\vspace{1em}
+
+\hspace{20pt}
+Al cambiar el tipo de padding desde pkcs7 a x923, cambiaremos el formato en que se representa el padding al cifrar un dato. Al asignar 4 bytes de padding en cada uno, el resultado obtenido sería el siguiente:
+
+\begin{center}
+    \textit{x923 = 00000004} \\
+    \textit{pkcs7 = 04040404}
+\end{center}
+
+\vspace{1em}
+
+\hspace{20pt}
+En este caso, el tamaño del padding es 01 byte. Al cambiar el padding de pkcs7 a x923 o al eliminar el bloque unpad del código, se sigue logrando desencriptar el mensaje sin ningún problema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej2-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 6: Código con padding x923.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej2-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 7: Código sin bloque unpad.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej2-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 8: Output por consola en cualquiera de los 3 casos anteriores.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 3. Ejercicio 3 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{3. Ejercicio 3}
+
+\vspace{2em}
+
+Se requiere cifrar el texto \textit{“KeepCoding te enseña a codificar y a cifrar”}. La clave para ello, tiene la etiqueta en el Keystore \textit{“cifrado-sim-chacha20-256”}. El nonce es \textit{“9Yccn/f5nJJhAt2S”}. El algoritmo que se debe usar es un Chacha20.
+
+\vspace{1em}
+
+¿Cómo podríamos mejorar de forma sencilla el sistema, de tal forma, que no sólo
+garanticemos la confidencialidad sino, además, la integridad del mismo? Se requiere obtener el dato cifrado, demuestra, tu propuesta por código, así como añadir los datos necesarios para evaluar tu propuesta de mejora.
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Al cifrar el texto entregado con el nonce y la clave asignada desde KeyStore se obtiene lo siguiente:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej3-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 9: Código python para Chacha20.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej3-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 10: Output por consola ejecución código Chacha20.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para mejorar de una forma sencilla el cifrado anterior, asignaremos como algoritmo de cifrado el Chacha20 Poly1305. Esto con el fin de aumentar la confidencialidad e integridad del sistema gracias a la posibilidad de ingresar un autenticador a la codificación, para realizar la correcta verificación de que el mensaje original no ha sido alterado por terceros, previa a su llegada a destino.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej3-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 11: Código python para Chacha20 Poly1305.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej3-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 12: Output por consola ejecución código Chacha20 Poly1305.
+\end{center}
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente, también se recomienda realizar la codificación del nonce de forma aleatoria y no predefina con anterioridad. De esta forma, aumentamos la seguridad del sistema permitiendo que el nonce no sea un valor asignado previamente.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=8cm]{img/ej3-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 13: Asignación de nonce aleatorio de 12 bytes en python.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 4. Ejercicio 4 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{4. Ejercicio 4}
+
+\vspace{2em}
+
+Tenemos el siguiente jwt, cuya clave es \textit{“Con KeepCoding aprendemos”}.
+
+\vspace{1em}
+
+\textit{eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiRG9uIFBlcGl0byBkZSB
+sb3MgcGFsb3RlcyI}
+\newline
+\textit{sInJvbCI6ImlzTm9ybWFsIiwiaWF0IjoxNjY3OTMzNTMzfQ.gfhw0
+dDxp6oixMLXXRP97W4TDTrv0y7B5}
+\newline
+\textit{YjD0U8ixrE}
+
+\vspace{1em}
+
+¿Qué algoritmo de firma hemos realizado?, ¿Cuál es el body del jwt?
+
+\vspace{1em}
+
+Un hacker está enviando a nuestro sistema el siguiente jwt:
+
+\vspace{1em}
+
+\textit{eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiR
+G9uIFBlcGl0byBkZSBsb3MgcGFsb3Rlcy}
+\newline
+\textit{IsInJvbCI6ImlzQWRtaW4iLCJpYXQiOjE2Njc5MzM1MzN9.krgBkzC
+BQ5WZ8JnZHuRvmnAZdg4ZMeR}
+\newline
+\textit{Nv2CIAODlHRI}
+
+\vspace{1em}
+
+¿Qué está intentando realizar?, ¿Qué ocurre si intentamos validarlo con pyjwt?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+El algoritmo de firma utilizado para cifrar el mensaje anterior es HMAC-256.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej4-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 14: JSON web token decodificado en página web https://jwt.io/ .
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El body del jwt es el payload en formato json que comprende la información del nombre de usuario, el rol y el iat o Initial Access Token.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej4-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 15: Payload visualizado en jwt.io
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Un hacker, al enviar el texto descrito en la presentación de este ejercicio, busca obtener la escala de privilegios sobre el envío de mensajes, utilizando una firma que no es valida dentro de esta comunicación, con el fin de realizar el descifrado del mensaje intervenido e la interrumpir la comunicación.
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente, al intentar validar el mensaje emitido con la librería pyjwt esta no se realizaría, debido a que esta librería no está diseñada para trabajar con mensajes cifrados directamente por HMAC-256.
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 5. Ejercicio 5 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{5. Ejercicio 5}
+
+\vspace{2em}
+
+El siguiente hash se corresponde con un SHA3 Keccak del texto \textit{“En KeepCoding aprendemos cómo protegernos con criptografía”}.
+
+\vspace{1em}
+
+\textit{bced1be95fbd85d2ffcce9c85434d79aa26f24ce82fbd4439517ea3f072d56fe}
+
+\vspace{1em}
+
+¿Qué tipo de SHA3 hemos generado?
+
+\vspace{1em}
+
+Y si hacemos un SHA2, y obtenemos el siguiente resultado:
+
+\vspace{1em}
+
+\textit{4cec5a9f85dcc5c4c6ccb603d124cf1cdc6dfe836459551a1044f4f2908aa5d63739506f
+6468833d77}
+\newline
+\textit{c07cfd69c488823b8d858283f1d05877120e8c5351c833}
+
+\vspace{1em}
+
+¿Qué hash hemos realizado?
+
+\vspace{1em}
+
+Genera ahora un SHA3 Keccak de 256 bits con el siguiente texto: \textit{“En KeepCoding
+aprendemos cómo protegernos con criptografía.”} ¿Qué propiedad destacarías del
+hash, atendiendo a los resultados anteriores?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Primero, se crea un script en bash llamado \textit{length.sh}, el cual permita realizar el conteo de caracteres de una cadena ingresada por consola. Esta cadena será el SHA3 indicado en el encabezado del ejercicio. Esto con el fin de conocer la cantidad de bytes que contiene el hash y establecer en base a este valor el tipo de SHA3 utilizado:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej5-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 16: Código script length.sh.
+\end{center}
+
+\vspace{2em}
+
+Al ejecutar el script anterior asignando como cadena \textit{bced1be95fbd85d2ffcce9c85434d79aa26f}
+\newline
+\textit{24ce82fbd4439517ea3f072d56fe}, se obtiene que esta posee 32 bytes de longitud. Gracias a esto, se puede definir que el SHA utilizado fue un \textit{SHA3-256}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej5-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 17: Confirmación de longitud de una cadena mediante ejecución de script length.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se realiza el conteo de caracteres para la cadena hexadecimal \textit{4cec5a9f85dcc5c4c6}
+\newline
+\textit{ccb603d124cf1cdc6dfe836459551a1044f4f2908aa5d63739506f6468833d77
+c07cfd69c488823b8d}
+\newline
+\textit{858283f1d05877120e8c5351c833}, con la finalidad de conocer la cantidad de bytes que la componen y descubrir el tipo de SHA2 con la que fue cifrada. Para esto se utiliza el script \textit{length.sh}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=17cm]{img/ej5-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 18: Confirmación de longitud de una cadena mediante ejecución de script length.sh.
+\end{center}
+
+\newpage
+
+Debido a que la cantidad de bytes de la cadena asignada es 64, se determina que el SHA2 utilizado para cifrar el mensaje es un \textit{SHA2-512}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente, se crea un script en bash llamado \textit{sha3.sh}, con la finalidad de calcular el hash \textit{SHA3-256} para dos cadenas distintas y obtener resultados por consola.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej5-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 19: Código script sha3.sh.
+\end{center}
+
+\vspace{2em}
+
+A la variable \textit{cadena1} asignamos el texto sin punto final \textit{En KeepCoding aprendemos cómo protegernos con criptografía}, y a la variable \textit{cadena2} el texto con punto final \textit{En KeepCoding aprendemos cómo protegernos con criptografía.} Al ejecutar el script obtenemos los siguientes resultados:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej5-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 20: Ejecución script sha3.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, se puede definir que el mínimo cambio en la cadena encriptada altera por completo el valor resultante. Con esto se hace referencia a las propiedades de difusión y el efecto avalancha de criptografía, los cuales nos dicen que con un mínimo cambio aplicado al mensaje original, obtendremos drásticos cambios en el mensaje final.
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 6. Ejercicio 6 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{6. Ejercicio 6}
+
+\vspace{2em}
+
+Calcula el hmac-256 (usando la clave contenida en el Keystore) del siguiente texto:
+
+\vspace{1em}
+
+\textit{Siempre existe más de una forma de hacerlo, y más de una solución válida.}
+
+\vspace{1em}
+
+Se debe evidenciar la respuesta. Cuidado si se usan herramientas fuera de los lenguajes de
+programación, por las codificaciones es mejor trabajar en hexadecimal.
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea un script en bash llamado \textit{HMAC256.sh}, con la finalidad de calcular el hmac256 del texto presente en el enunciado del problema, asignando la siguiente contraseña existente en \textit{KeyStore}:
+
+\vspace{1em}
+
+\begin{center}
+    \textit{A212A51C997E14B4DF08D55967641B0677CA31E049E672A4B06861AA4D5826EB}
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej6-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 21: Código script HMAC256.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Con el fin de emular la funcionalidad implementada desde el código python, se utiliza en bash la herramienta \textit{openssl} con sus argumentos dgst (para calcular hashes o cadenas criptográficas), sha256 (calcular hashes mediante algoritmo SHA2-256), macopt y mac (para especificar la clave de autenticación basada en HMAC) y binary / xxd (para indicar que la salida debe estar en binario y luego ser convertida a hexadecimal). Al ejecutar el código se obtiene el siguiente resultado:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej6-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 22: Ejecución script HMAC256.sh.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 7. Ejercicio 7 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{7. Ejercicio 7}
+
+\vspace{2em}
+
+Trabajamos en una empresa de desarrollo que tiene una aplicación web, la cual requiere un
+login y trabajar con passwords. Nos preguntan qué mecanismo de almacenamiento de las
+mismas proponemos.
+
+\vspace{1em}
+
+Tras realizar un análisis, el analista de seguridad propone un hash SHA-1. Su responsable, le indica que es una mala opción. ¿Por qué crees que es una mala opción?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{Porque el algoritmo SHA-1 presenta vulnerabilidades críticas al momento de encriptar contraseñas, lo cual deriva en potenciales debilidades de la seguridad. Algunas de estas son:}}
+
+\begin{itemize}
+  \item \textbf{\textit{Es vulnerable a colisiones: dos o mas entradas pueden dar un mismo valor de hash de salida.}}
+  \item \textbf{\textit{Alta velocidad de cracking: debido a que el algoritmo genera salidas de 160 bits o 20 bytes, la probabilidad de que mediante ataques de fuerza bruta y/o diccionario se rompa el hash es bastante alta.}}
+\end{itemize}
+
+\vspace{1em}
+
+Después de meditarlo, propone almacenarlo con un SHA-256, y su responsable le pregunta si
+no lo va a fortalecer de alguna forma. ¿Qué se te ocurre?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{Una forma de fortalecer el SHA-256 es incorporando los bloques a la cadena encriptada del SALT y PEPPER. Esto con el fin de añadir aleatoriedad a las contraseñas antes del hash e incorporar un bloque secreto adicional en el servidor donde se albergan estas.}}
+
+\vspace{1em}
+
+Parece que el responsable se ha quedado conforme, tras mejorar la propuesta del SHA-256,
+no obstante, hay margen de mejora. ¿Qué propondrías?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{En primera instancia, fortalecer el encriptado propuesto anteriormente, cambiando de SHA-256 a SHA3-256 y manteniendo el uso de los bloques salt y pepper. Como una medida mas drástica a nivel de sistema, migrar el algoritmo actual a uno que presente mejores estandares de seguridad para encriptado de contraseñas como ARGON2.}}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 8. Ejercicio 8 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{8. Ejercicio 8}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tenemos la siguiente API REST, muy simple.
+
+\vspace{1em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej8-1.png}
+\end{center}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej8-2.png}
+\end{center}
+
+\begin{center}
+    \includegraphics[width=8cm]{img/ej8-3.png}
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Como se puede ver en el API, tenemos ciertos parámetros que deben mantenerse
+confidenciales. Así mismo, nos gustaría que nadie nos modificase el mensaje sin que nos
+enterásemos. Se requiere una redefinición de dicha API para garantizar la integridad y la
+confidencialidad de los mensajes. Se debe asumir que el sistema end to end no usa TLS entre
+todos los puntos.
+
+\vspace{1em}
+
+¿Qué algoritmos usarías?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Dada las características planteadas, una buena opción sería utilizar AES GCM, ya que combina el cifrado simétrico AES con el modo de operación GCM. Gracias a esto, nuestro sistema poseerá autenticación y cifrado para los mensajes de mensajes en un solo algoritmo. 
+
+\vspace{1em}
+
+\hspace{20pt}
+GCM ofrece integridad y autenticidad a los datos a través del uso de un autenticador de comunicación, asegurando que estos no hayan sido ni sean alterados o manipulados en medio de la comunicación.
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 9. Ejercicio 9 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{9. Ejercicio 9}
+
+\vspace{2em}
+
+Se requiere calcular el KCV de la siguiente clave AES:
+
+\vspace{1em}
+
+\textit{A2CFF885901A5449E9C448BA5B948A8C4EE377152B3F1ACFA0148FB3A426DB72}
+
+\vspace{1em}
+
+Para lo cual, vamos a requerir el KCV(SHA-256) así como el KCV(AES). El KCV(SHA-256) se
+corresponderá con los 3 primeros bytes del SHA-256. Mientras que el KCV(AES) se
+corresponderá con cifrar un texto del tamaño del bloque AES (16 bytes) compuesto con
+ceros binarios (00), así como un iv igualmente compuesto de ceros binarios. Obviamente, la
+clave usada será la que queremos obtener su valor de control.
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para calcular el KCV de la clave AES indicada anteriormente se debe calcular el KCV(SHA-256) y el KCV(AES).
+
+\vspace{1em}
+
+\hspace{20pt}
+Primero, se obtiene el KCV(SHA-256) de la clave AES indicada anteriormente. Para esto se crea un script en bash que nos entregue el valor del hash por consola tras ingresar una clave AES por teclado. Dado que el KCV(SHA-256) corresponde a los 3 primeros bytes del SHA-256, se incorpora un arreglo para obtener los primeros 6 caracteres del resultado.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej9-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 23: Código script kcv-sha256.sh.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej9-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 24: Ejecución script kcv-sha256.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, para obtener el KCV(AES), se debe cifrar un texto de tamaño 16 bytes compuesto por ceros binarios, en conjunto de un IV del mismo tipo (ceros binarios). La clave utilizada será la indicada anteriormente. Se crea un script en bash que permita ingresar por teclado el texto a cifrar, el valor del IV y la clave AES entregada. Por consola, se obtendrá el valor del cifrado AES y los primeros 3 bytes (6 caracteres) de este como valor de KCV(AES). 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej9-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 25: Código script kcv-aes.sh.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej9-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 26: Ejecución script kcv-aes.sh.
+\end{center}
+
+\newpage
+
+\hspace{20pt}
+Finalmente, los resultados obtenidos serán los siguientes:
+
+\vspace{1em}
+
+\begin{itemize}
+  \item \textbf{SHA-256:} \textit{db7df2f62c6f7d5fd13ebbc6c4fd79e95115c7c38d2a9fce8370eaac6cfd0631}
+  \item \textbf{KCV(SHA-256):} \textit{db7df2}
+  \item \textbf{AES:} \textit{5244dbd02d57d56ae08e064c56c7ca74a35eccad6db31f05841bde3d4e3ada4a}
+  \item \textbf{KCV(AES):} \textit{5244db}
+\end{itemize}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 10. Ejercicio 10 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{10. Ejercicio 10}
+
+\vspace{2em}
+
+El responsable de Raúl, Pedro, ha enviado este mensaje a RRHH:
+
+\vspace{1em}
+
+\textit{Se debe ascender inmediatamente a Raúl. Es necesario mejorarle sus condiciones
+económicas un 20\% para que se quede con nosotros.}
+
+\vspace{1em}
+
+Lo acompaña del siguiente fichero de firma PGP (MensajeRespoDeRaulARRHH.txt.sig). Nosotros, que pertenecemos a RRHH vamos al directorio a recuperar la clave para verificarlo. Tendremos los ficheros Pedro-priv.txt y Pedro-publ.txt, con las claves privada y pública.
+
+\vspace{1em}
+
+Las claves de los ficheros de RRHH son RRHH-priv.txt y RRHH-publ.txt que también se
+tendrán disponibles.
+
+\vspace{1em}
+
+Se requiere verificar la misma, y evidenciar dicha prueba.
+
+\vspace{1em}
+
+Así mismo, se requiere firmar el siguiente mensaje con la clave correspondiente de las
+anteriores, simulando que eres personal de RRHH.
+
+\vspace{1em}
+
+\textit{Viendo su perfil en el mercado, hemos decidido ascenderle y mejorarle un 25\% su
+salario. Saludos.}
+
+\vspace{1em}
+
+Por último, cifra el siguiente mensaje tanto con la clave pública de RRHH como la de Pedro y
+adjunta el fichero con la práctica.
+
+\vspace{1em}
+
+\textit{Estamos todos de acuerdo, el ascenso será el mes que viene, agosto, si no hay
+sorpresas.}
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para desarrollar este ejercicio es necesario mantener todos los ficheros nombrados anteriormente en un mismo directorio, con el fin de tener un acceso mas directo sobre ellos y evitar el trabajar con las rutas absolutas de cada uno.
+
+\newpage
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 27: Lista inicial de ficheros en directorio de trabajo.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para confirmar la veracidad de la información a través del análisis de los textos enviados y las claves privadas/públicas presentes en la comunicación entre RRHH y Pedro, se utiliza la herramienta \textit{Kleopatra}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Se adjuntan las claves privadas y públicas tanto de Pedro como del departamento de RRHH al directorio de \textit{Certificados} en \textit{Kleopatra}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 28: Incorporación claves públicas/privadas de Pedro y RRHH a Kleopatra.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se abre el fichero \textit{MensajeRespoDeRaulARRHH.sig} con \textit{kleopatra}, la cual nos indica que la firma es de confianza y se confía en la validez del certificado.
+
+\newpage
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 29: Confirmación de confianza y validez para firma y certificado en Kleopatra.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras esto, se crea un nuevo fichero en el directorio actual llamado \textit{MensajeRespoDeRaulARRHH}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 30: Lista actualizada de ficheros en directorio actual de trabajo.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se crea un fichero de nombre \textit{MensajeRespuestaDesdeRRHH.txt}, el cual contiene el siguiente texto:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textbf{\textit{Viendo su perfil en el mercado, hemos decidido ascenderle y mejorarle un 25\% su salario. Saludos.}}
+\end{itemize}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se firma el fichero \textit{MensajeRespuestaDesdeRRHH.txt} como personal de RRHH. Tras esto se solicita ingresar una contraseña, a la cual se le asigna como valor \textit{123456}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej10-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 31: Firma de fichero MensajeRespuestaDesdeRRHH.txt.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej10-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 32: Firma de fichero MensajeRespuestaDesdeRRHH.txt realizada con éxito.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Posteriormente se crea un nuevo archivo llamado \textit{MensajeRespuestaDesdeRRHH.txt.sig}, el cual contiene el mensaje emitido desde RRHH como respuesta a Pedro, pero firmado. Esta sería la respueta de RRHH que debe ser enviada a Pedro.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 33: Lista actualizada de ficheros en directorio actual de trabajo.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego se crea un nuevo fichero llamado \textit{RespuestaFinalPedro.txt}, en el cual se ingresará el siguiente texto:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textbf{\textit{Estamos todos de acuerdo, el ascenso será el mes que viene, agosto, si no hay sorpresas.}}
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej10-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 34: Creación fichero RespuestaFinalPedro.txt.
+\end{center}
+
+\vspace{2em}
+
+el cual será cifrado tanto para Pedro como para RRHH.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej10-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 35: Encriptación de fichero RespuestaFinalPedro.txt.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/ej10-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 36: Encriptación de fichero RespuestaFinalPedro.txt realizada con éxito.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, el directorio de trabajo queda con los siguientes archivos:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej10-11.png}
+    
+\vspace{0.1em}
+    
+    Fig. 37: Lista final de ficheros en el directorio actual de trabajo.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 11. Ejercicio 11 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{11. Ejercicio 11}
+
+\vspace{2em}
+
+Nuestra compañía tiene un contrato con una empresa que nos da un servicio de
+almacenamiento de información de videollamadas. Para lo cual, la misma nos envía la clave simétrica de cada videollamada cifrada usando un RSA-OAEP. El hash que usa el algoritmo interno es un SHA-256.
+
+\vspace{1em}
+
+El texto cifrado es el siguiente:
+
+\vspace{1em}
+
+\textit{b72e6fd48155f565dd2684df3ffa8746d649b11f0ed4637fc4c99d18283b32e1709b30c}
+\newline
+\textit{96b4a8a20d5dbc639e9d83a53681e6d96f76a0e4c279f0dffa76a329d04e3d3d4ad}
+\newline
+\textit{629793eb00cc76d10fc00475eb76bfbc1273303882609957c4c0ae2c4f5ba670a4126}
+\newline
+\textit{f2f14a9f4b6f41aa2edba01b4bd586624659fca82f5b4970186502de8624071be78cce}
+\newline
+\textit{f573d896b8eac86f5d43ca7b10b59be4acf8f8e0498a455da04f67d3f98b4cd907f27}
+\newline
+\textit{639f4b1df3c50e05d5bf63768088226e2a9177485c54f72407fdf358fe64479677d8296}
+\newline
+\textit{ad38c6f177ea7cb74927651cf24b01dee27895d4f05fb5c161957845cd1b5848ed64ed3}
+\newline
+\textit{b03722b21a526a6e447cb8ee}
+
+\vspace{1em}
+
+Las claves pública y privada las tenemos en los ficheros clave-rsa-oaep-publ.pem y clave-rsa-oaep-priv.pem.
+
+\vspace{1em}
+
+Si has recuperado la clave, vuelve a cifrarla con el mismo algoritmo. ¿Por qué son diferentes los textos cifrados?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar el proceso de cifrado y descifrado mediante RSA-OAEP se utiliza el siguiente script de python llamado \textit{RSA-OAEP.py}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=14cm]{img/ej11-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 38: Código script RSA-OAEP.py.
+\end{center}
+
+\vspace{2em}
+
+Cabe destacar que debido a la asignación de las variables \textit{path\_file\_publ} y \textit{path\_file\_priv}, los ficheros que contienen las claves pública y privada \textit{clave-rsa-oaep-publ.pem} y \textit{clave-rsa-oaep-priv.pem} respectivamente, estos archivos deben estar en el mismo directorio que el fichero \textit{RSA-OAEP.py}, tal como se aprecia en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej11-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 39: Lista de ficheros con claves públicas/privadas en directorio actual de trabajo.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se define la variable \textit{encrypted}, la cual alberga el texto cifrado entregado en el enunciado del ejercicio. Así, al ejecutar el script, el resultado obtenido es el siguente:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej11-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 40: Ejecución script RSA-OAEP.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Debido que al generar el padding se aplica un módulo que lo realiza de manera aleatoria para el cifrado, si se ejecuta nuevamente el script, el valor del cifrado cambia, mas no el del descifrado que seguirá siendo el mismo.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej11-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 41: Segunda ejecución script RSA-OAEP.py.
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 12. Ejercicio 12 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{12. Ejercicio 12}
+
+\vspace{2em}
+
+Nos debemos comunicar con una empresa, para lo cual, hemos decidido usar un algoritmo
+como el AES/GCM en la comunicación. Nuestro sistema, usa los siguientes datos en cada
+comunicación con el tercero:
+
+\vspace{1em}
+
+\textit{Key:E2CFF885901B3449E9C448BA5B948A8C4EE322152B3F1ACFA0148FB3A426DB74}
+\newline
+\textit{Nonce:9Yccn/f5nJJhAt2S}
+
+\vspace{1em}
+
+¿Qué estamos haciendo mal?
+
+\vspace{1em}
+
+Cifra el siguiente texto:
+
+\vspace{1em}
+
+\textit{He descubierto el error y no volveré a hacerlo mal}
+
+\vspace{1em}
+
+Usando para ello, la clave, y el nonce indicados. El texto cifrado presentalo en hexadecimal y en base64.
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Lo que se está haciendo mal en primera instancia es asignar un valor específico al \textit{NONCE}, el cual como política de seguridad se recomienda siempre utilizarlo como un valor aleatorio y no específico. Esto con la finalidad de no utilizar el mismo valor durante la comunicación.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para cifrar el texto \textit{"He descubierto el error y no volveré a hacerlo mal"}, primero que todo se debe convertir el valor del \textit{nonce} a hexadecimal. Para esto utilizamos un arreglo por consola en bash:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej12-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 42: Conversión de valor del nonce a hexadecimal en bash.
+\end{center}
+
+\vspace{2em}
+
+Así se obtiene que el valor del \textit{nonce} en hexadecimal es \textit{f5871c9ff7f99c926102dd92}. Luego, este valor se agrega al fichero python como argumento para la variable \textit{nonce}, al igual que con los valores de \textit{key} y el texto a cifrar en UTF-8.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej12-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 43: Código script AES-GCM.py.
+\end{center}
+
+\vspace{2em}
+
+Para lo cual, al ser ejecutado desde consola, se obtienen los siguientes valores:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej12-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 44: Ejecución script AES-GCM.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tal como se aprecia en la imagen, el valor obtenido en \textit{BASE64} para el texto cifrado es:
+
+\vspace{1em}
+
+\textbf{\textit{Xcu2Jh0PuinOOUMemgE7NMvKKk4Euy2QFJ1h9K/QTWXiq92dhLum64MHCV9QePv8FiVt}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar la conversión a un valor \textit{hexadecimal}, se aplica el mismo arreglo realizado al comienzo del ejercicio en bash a través de consola:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej12-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 45: Conversión de un valor en base64 a hexadecimal en bash.
+\end{center}
+
+\vspace{2em}
+
+Finalmente, el valor para el texto cifrado expresado en \textit{hexadecimal} es:
+
+\vspace{1em}
+
+\textbf{\textit{5dcbb6261d0fba29ce39431e9a013b34cbca2a4e04bb2d90149d61f4afd04d65e2abdd9d84bb}}
+\newline
+\textbf{\textit{a6eb8307095f5078fbfc16256d}}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 13. Ejercicio 13 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{13. Ejercicio 13}
+
+\vspace{2em}
+
+Se desea calcular una firma con el algoritmo PKCS\#1 v1.5 usando las claves contenidas en los ficheros clave-rsa-oaep-priv.pem y clave-rsa-oaep-publ.pem del mensaje siguiente:
+
+\vspace{1em}
+
+\textit{El equipo está preparado para seguir con el proceso, necesitaremos más recursos.}
+
+\vspace{1em}
+
+¿Cuál es el valor de la firma en hexadecimal?
+
+\vspace{1em}
+
+Calcula la firma (en hexadecimal) con la curva elíptica ed25519, usando las claves ed25519-
+priv y ed25519-publ.
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para comenzar, se almacenan los archivos \textit{clave-rsa-oaep-priv.pem}, \textit{clave-rsa-oaep-publ.pem}, \textit{ed25519-priv} y \textit{ed25519.publ} en un mismo directorio, con la finalidad de poder acceder a estos directamente y evitar redirecciones en las rutas absolutas de cada archivo. Luego, se calcula la firma para el mensaje "\textit{El equipo está preparado para seguir con el proceso, necesitaremos más recursos.}" mediante un algoritmo PKCS\#1 v1.5, utilizando el contenido del fichero \textit{clave-rsa-oaep-priv.pem}. Para esta acción se utiliza la herramienta \textit{openssl} mediante un comando ingresado por terminal:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 46: Creación firma mensaje mediante OpenSSL en bash.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras crear la firma se genera un fichero llamado \textit{firma\_mensaje.txt}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 47: Lista de ficheros incluido firma\_mensaje.txt en directorio actual de trabajo.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al revisar el archivo \textit{firma\_mensaje.txt} se puede apreciar que el formato entregado plantea toda la firma en una sola línea de texto. 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 48: Contenido fichero firma\_mensaje.txt.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se crea un script en bash llamado \textit{format.sh}, al cual se le ingrese un fichero por teclado, se le aplique un arreglo que reescriba el mismo contenido del archivo original pero con saltos de línea de 40 caracteres cada una, y guarde este en un nuevo archivo, distinto a \textit{firma\_mensaje.txt}. Esto con el fin de no perder la firma original pero si plantear visualmente mejor el contenido de la firma.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 49: Código script format.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se ejecuta el fichero \textit{format.sh} y se le entrega por teclado el archivo \textit{firma\_mensaje.txt}. Como output por consola se obtiene el contenido del nuevo archivo \textit{firma\_mensaje\_ordenado.txt}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 50: Ejecución script format.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Así se obtiene que la firma del mensaje es:
+
+\begin{verbatim}
+    a4606c518e0e2b443255e3626f3f23b77b9d5e1e
+    4d6b3dcf90f7e118d6063950a23885c6dece92aa
+    3d6eff2a72886b2552be969e11a4b7441bdeadc5
+    96c1b94e67a8f941ea998ef08b2cb3a925c959bc
+    aae2ca9e6e60f95b989c709b9a0b90a0c69d9eac
+    cd863bc924e70450ebbbb87369d721a9ec798fe6
+    6308e045417d0a56b86d84b305c555a0e766190d
+    1ad0934a1befbbe031853277569f8383846d971d
+    0daf05d023545d274f1bdd4b00e8954ba39dacc4
+    a0875208f36d3c9207af096ea0f0d3baa752b485
+    45a5d79cce0c2ebb6ff601d92978a33c1a8a707c
+    1ae1470a09663acb6b9519391b61891bf5e06699
+    aa0a0dbae21f0aaaa6f9b9d59f41928d
+\end{verbatim}
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente, se solicita calcular la firma (en hexadecimal) con la curva elíptica ed25519, usando las claves ed25519-priv y ed25519-publ, para el mismo mensaje inicial. Para esta parte del ejercicio se utiliza el script de python facilitado por el profesor en cargado del módulo, al cual se la asignó el nombre \textit{rsa-curva.py}. Ya que anteriormente se obtuvo el valor de la firma PKCS, se comenta la línea 23 del código del fichero \textit{rsa-curva.py} con el fin de solo obtener por pantalla la firma calculada con la curva elíptica \textit{ed25519}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 51: Código script rsa-curva.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al ejecutar el script de python, el resultado obtenido por consola es el siguiente:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 52: Ejecución script rsa-curva.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Debido a la presentación extensa de la firma por consola, se crea un fichero llamado \textit{firma\_ed.txt} el cual posee el valor de la firma ya calculada. A este archivo se le aplicará el script de bash \textit{format.sh} para así reordenar de a 40 caractéres este código y mejorar su visualización.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej13-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 53: Ejecución script format.sh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Así, la clave firmada con la curva elíptica ed25519 es:
+
+\begin{verbatim}
+    6266333235393264633233356132366533316532
+    3331303633613139383462623735666664396463
+    3535353063663330313035393131636134353630
+    6461623532616262343065346637653264336166
+    3832386162616331343637643935643636386138
+    3033393565306137316335313739386264353434
+    3639623733363064
+\end{verbatim}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 14. Ejercicio 14 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{14. Ejercicio 14}
+
+\vspace{2em}
+
+Necesitamos generar una nueva clave AES, usando para ello una HKDF (HMAC-based Extract-
+and-Expand key derivation function) con un hash SHA-512. La clave maestra requerida se encuentra en el keystore con la etiqueta “cifrado-sim-aes-256”. La clave obtenida dependerá
+de un identificador de dispositivo, en este caso tendrá el valor en hexadecimal:
+
+\vspace{1em}
+
+\textit{e43bb4067cbcfab3bec54437b84bef4623e345682d89de9948fbb0afedc461a3}
+
+\vspace{2em}
+
+\begin{center}
+        \includegraphics[width=12cm]{img/Cripto-1.png}
+\end{center}
+
+\vspace{2em}
+
+¿Qué clave se ha obtenido?
+
+\vspace{2em}
+
+\hspace{20pt} \textbf{DESARROLLO}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para la resolución de este ejercicio se utiliza un script de python facilitado por el profesor, al cual incorporaremos el valor del identificador de dispositivo y la clave obtenida del programa \textit{KeyStore}.
+
+\vspace{1em}
+
+\begin{itemize}
+  \item \textbf{Identificador de dispositivo:}
+  \newline
+  \textit{e43bb4067cbcfab3bec54437b84bef4623e345682d89de9948fbb0afedc461a3}
+  \item \textbf{Clave KeyStore con etiqueta cifrado-sim-aes-256:} 
+  \newline
+  \textit{A2CFF885901A5449E9C448BA5B948A8C4EE377152B3F1ACFA0148FB3A426DB72}
+\end{itemize}
+
+\vspace{1em}
+
+\hspace{20pt}
+El valor del identificador de dispositivo se agrega como argumento en hexadecimal a la variable \textit{salt} y la clave del KeyStore como argumento hexadecimal a la variable \textit{master\_secret}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej14-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 54: Código script hkdf-14.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras ejecutar el programa, por consola obtenemos el siguiente resultado asociado a la clave generada:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/ej14-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 55: Ejecución script hkdf-14.py.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Así se define que la nueva clave AES generada utilizando HKDF es:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textit{e716754c67614c53bd9bab176022c952a08e56f07744d6c9edb8c934f52e448a}
+\end{itemize}
+
+
+
+
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 15. Ejercicio 15 %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{15. Ejercicio 15}
+
+\vspace{2em}
+
+Nos envían un bloque TR31:
+
+\vspace{1em}
+
+\textit{D0144D0AB00S000042766B9265B2DF93AE6E29B58135B77A2F616C8D515ACDBE6A5626F79FA7B40}
+\newline
+\textit{71E9EE1423C6D7970FA2B965D18B23922B5B2E5657495E03CD857FD37018E111B}
+
+\vspace{1em}
+
+Donde la clave de transporte para desenvolver (unwrap) el bloque es:
+
+\vspace{1em}
+
+\textit{A1A10101010101010101010101010102}
+
+\vspace{1em}
+
+¿Con qué algoritmo se ha protegido el bloque de clave?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{El bloque de clave fue protegido con algoritmo AES.}}
+
+\hspace{1em}
+
+¿Para qué algoritmo se ha definido la clave?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{La clave ha sido definida para ser trabajada con algoritmo AES.}}
+
+\vspace{1em}
+
+¿Para qué modo de uso se ha generado?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{Para poder cifrar y descifrar datos.}}
+
+\vspace{1em}
+
+¿Es exportable?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{Si es exportable.}}
+
+\vspace{1em}
+
+¿Para qué se puede usar la clave?
+
+\vspace{1em}
+
+\hspace{20pt}
+\textbf{\textit{La clave se puede usar para cifrar y descifrar datos.}}
+
+\vspace{1em}
+
+¿Qué valor tiene la clave?
+
+\vspace{1em}
+
+\textbf{\textit{El valor de la clave sería "c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1".}}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%          END CONTENTS         %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
