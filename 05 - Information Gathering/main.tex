@@ -1,0 +1,1852 @@
+\documentclass[12pt,oneside,a4paper]{book}
+\usepackage[%
+  a4paper,%
+  left = 20mm,%
+  right = 20mm,%
+  textwidth = 178mm,%
+  top = 40mm,%
+  bottom = 30mm,%
+  %heightrounded,%
+  headheight=70pt,%
+  headsep=25pt,%
+]{geometry}
+\usepackage{graphicx}
+\usepackage[sfdefault,light]{FiraSans}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    allcolors  = link-blue, 
+}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{color,colortbl}
+\usepackage{multirow}
+
+\definecolor{link-blue}{RGB}{6,69,173}
+\definecolor{dark-green}{RGB}{52,133,62}
+\definecolor{light-blue}{RGB}{127,180,240}
+\definecolor{dark-blue}{RGB}{72,120,224}
+\definecolor{heading-grey}{RGB}{128,128,128}
+\definecolor{heading2-grey}{RGB}{200,200,200}
+\definecolor{Critical}{RGB}{192,0,0}
+\definecolor{High}{RGB}{255,0,0}
+\definecolor{Medium}{RGB}{255,192,0}
+\definecolor{Low}{RGB}{255,255,0}
+\definecolor{Informational}{RGB}{94,185,255}
+
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{array,booktabs}
+\usepackage{fancyhdr}
+\renewcommand{\footrulewidth}{0.2pt}
+\renewcommand{\headrulewidth}{0.2pt}
+\fancyfoot{}
+\fancyhead{}
+\fancyfoot[C]{Confidential}
+\fancypagestyle{plain}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey} \\ Información Confidencial \\ (\href{https://keepcoding.io}{keepcoding.io})}
+    \fancyhead[R]{\includegraphics[width=1.5cm]{img/kp1.png}}
+}
+\fancypagestyle{fancy}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey}{ Información Confidencial \\ (\hyperlink{https://keepcoding.io}{keepcoding.io})}}
+    \fancyhead{}
+}
+\thispagestyle{fancy}\pagestyle{plain}
+
+\newcommand{\email}[1]{\href{mailto://#1}{#1}}
+\newcommand{\newchapter}[1]{{\section*{#1}
+\addcontentsline{toc}{chapter}{#1}}}
+\newcommand{\newsection}[1]{{\subsection*{#1}
+\addcontentsline{toc}{section}{#1}}}
+\newcommand{\newsubsection}[1]{{\subsubsection*{#1}
+\addcontentsline{toc}{subsection}{#1}}}
+\usepackage[skip=10pt plus1pt, indent=0pt]{parskip}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\makeatletter
+\renewcommand\tableofcontents{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    \if@restonecol\twocolumn\fi
+    }
+\makeatother
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\huge\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\Large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\large\bfseries}{\thesubsubsection}{1em}{}
+
+% \titleformat{command}[shape]{format}{label}{sep}{before}[after]
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+
+\titlespacing{\section}{0pt}{1em}{0.5em}
+\titlespacing{\subsection}{0pt}{0em}{0.25em}
+
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+\def\projectno{897-19}
+
+
+\begin{document}
+
+\renewcommand{\headrulewidth}{0pt}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           BEGIN TITLE PAGE          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{titlepage}
+   \thispagestyle{fancy}
+   \begin{center}
+        \vspace{5em}
+   
+        \centering\includegraphics[width=12cm]{img/kp2.png}
+
+        \vspace{5em}
+
+        \huge{\textbf{Práctica de módulo}}
+
+        \vspace{2em}
+        
+        \huge{\textbf{Recopilación de información para ''Bug Bounty Program'' de plataforma HackerOne hacia empresa Traffic Factory. \\}}
+        
+        \vspace{5em}
+
+        \Large{por Javier González Espinoza}
+
+        \vspace{6em}
+        
+   \end{center}
+
+    \normalsize{Date: \today \\
+     Módulo: Recopilación de Información \\
+     Profesor: Martín Martín}
+    
+\end{titlepage}
+
+\renewcommand{\headrulewidth}{0.2pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					END TITLE PAGE						%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%         COMIENZO CONTENIDOS        %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 1 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{I.  Objetivos y detalles de la práctica}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% OBJETIVOS %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Objetivos de la práctica}
+
+\vspace{1em}
+
+\hspace{20pt}
+El objetivo principal de este infome es documentar el proceso realizado para recopilar información sensible de la empresa \textit{Traffic Factory}, utilizando técnicas de \textit{Footprinting}, \textit{Fingerprinting} y \textit{OSINT} vistas en el actual módulo. 
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% DETALLES %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Detalles de la práctica}
+
+\vspace{1em}
+
+\hspace{20pt}
+En esta práctica el/la alumno/a aplicará las técnicas y utilizará las diferentes herramientas vistas durante el módulo.
+
+\vspace{1em}
+
+%%%%% SUBSECTION A %%%%%
+\newsubsection{a.  Preparación}
+
+\vspace{1em}
+
+\hspace{20pt}
+El/La alumno/a deberá elegir una organización que esté dentro del programa de hackerone.
+
+\vspace{1em}
+
+\begin{itemize}
+    \item Crear una cuenta en https://hackerone.com
+    \item Elegir una organización con varios dominios en scope.
+    \item Elegir una organización que permita realizar un reconocimiento vertical amplio (que tenga dominios en scope del estilo: *.dominio.com).
+    \item Comprobar las normas del programa detalladamente asegurando que está permitido atacar dichos dominios.
+\end{itemize}
+
+\vspace{1em}
+
+%%%%% SUBSECTION B %%%%%
+\newsubsection{b.  Desarrollo}
+
+\vspace{1em}
+
+\hspace{20pt}
+El objetivo es obtener la máxima información posible de la organización elegida. Esto incluye, pero no limita:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item Información de cada dominio.
+    \item Subdominios relacionados (dentro del scope).
+    \item Análisis de vulnerabilidades.
+    \item Información obtenida con técnicas OSINT (correos electrónicos, empleados relevantes, etc.).
+\end{itemize}
+
+\vspace{1em}
+
+%%%%% SUBSECTION C %%%%%
+\newsubsection{c.	Evaluación}
+
+\vspace{1em}
+
+
+\hspace{20pt}
+Es obligatorio la entrega de un informe para considerar la práctica como APTA. Este informe ha de contener:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item Un apartado inicial con los resultados más importantes del reconocimiento de la información.
+    \item Detalles de las herramientas y los comandos utilizados. Paso a paso para que puedan ser repetidos.
+    \item Otros ficheros suplementarios donde se almacenen los resultados. Para facilitar que el informe principal no esté lleno de cientos de páginas con tablas.
+    \item Prima más el contenido y la estructura que la apariencia del informe.
+\end{itemize}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 2 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{II. Selección de programa en HackerOne}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% SELECCIÓN DEL PROGRAMA %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Selección del programa}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar el siguiente trabajo práctico fue necesario crear una cuenta en la plataforma HackerOne, con el objetivo de tener acceso a las diferentes oportunidades de BugBounty que ofrece la plataforma. 
+
+\vspace{1em}
+
+\hspace{20pt}
+El programa seleccionado para realizar el reconocimiento de información pertenece a la empresa \textit{Traffic Factory} (\textit{link:} https://hackerone.com/trafficfactory?type=team). La política de trabajo planteada por la marca se incluye dentro del directorio adjunto a esta práctica con el nombre \textit{HackerOne\_TF-policy.md}.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% SELECCIÓN DEL SCOPE %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Selección del scope}
+
+\vspace{1em}
+
+\hspace{20pt}
+El programa de \textit{Traffic Factory} ofrece la siguiente lista de scopes a seleccionar:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 1: Rango de scopes.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De la lista anterior se define la extensión de dominio \textit{*.trafficfactory.biz} como la seleccionada para realizar la recopilación de información en el presente trabajo. 
+ 
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 3 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{III. Resumen de información obtenida}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se presenta un resumen con cierta información encontrada durante el desarrollo del presente trabajo.
+
+\vspace{2em}
+
+\newsection{1.	Footprinting}
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Rango de subdominios pertenecientes al scope \textit{*.trafficfactory.biz}.
+	\item Rango real de subdominios que presentan una respuesta al servidor, como \textit{www.trafficfactory.com}, \textit{admin-php.trafficfactory.biz} y \textit{main.trafficfactory.biz}.
+	\item Rango de subdominios que redireccionan en otro.
+	\item Direcciones de correo con dominio \textit{trafficfactory.com} (Ver Fig. 16: Correos encontrados tras ejecución de katana).
+\end{itemize}
+
+\vspace{2em}
+
+\newsection{2.	Fingerprinting}
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Rango de direcciones IP para escanear.
+	\item Puertos abiertos en diferentes direcciones IP, conociendo la ejecución de servicios como SSH, SMPT y servidores WEB debido a la presencia de puertos como el 22, 80 y 443 respectivamente, entre otros.
+	\item Versiones de servicios ejecutados bajo puertos abiertos como SSH, SMTP y servidores NGINX.
+
+\end{itemize}
+
+\vspace{2em}
+
+\newsection{3.	Análisis de vulnerabilidades}
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Vulnerabilidad de severidad baja\textit{TCP Timestamps Information Disclosure} en IP \textit{64.233.190.121} (\textit{mail.trafficfactory.biz}) alertada por Greenbone.
+	\item Vulnerabilidades de severidad baja \textit{TCP Timestamps Information Disclosure} y \textit{ICMP Timestamp Replay Information Disclouse} en IP \textit{69.55.57.36} (\textit{data.trafficfactory.biz}) alertadas por Greenbone.
+	\item Vulnerabilidades de severidad baja \textit{TCP Timestamps Information Disclosure} e \textit{ICMP Timestamp Replay Information Disclouse}; de severidad media \textit{SSL/TLS: Deprecated TLSv1.0 and TLSv1.1 Protocol Detection}; de serveridad alta \textit{SSL/TLS: Report Vulnerable Cipher Suites for HTTPS}, todas en IP \textit{69.55.57.37} (\textit{www.trafficfactory.com}) alertadas por Greenbone.
+	\item Vulnerabilidad con \textit{CVE-2022-1654} para versión desactualizada para tema de WordPress en IP \textit{69.55.57.37} alertada por WPScan.
+	\item Referencias a posibles vulnerabilidades (\textit{CVE-2013-0169}, \textit{CVE-2011-3389}) en IPs \textit{69.55.57.37} y \textit{69.55.57.49} alertada por WPScan..
+	\item Vulnerabilidad con \textit{CVE-2016-6329} en IP \textit{69.55.57.49} alertada por WPScan..
+\end{itemize}
+
+\vspace{2em}
+
+\newsection{4.	OSINT}
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Nombres de personas, números telefónicos, direcciones de correo, referencias a cuentas de redes sociales, direcciones físicas de empresas anexadas como información para subdominio \textit{admin-php.trafficfactory.biz} descubierto por Maltego. 
+	\item Nombres de personas, números telefónicos, direcciones de correo, direciones físicas de empresas anexadas como información para subdominio \textit{www.trafficfactory.com} descubierto por Maltego. .
+	\item Documentos con extensión .pdf para puntos anteriores descubierto por Maltego.
+	\item Nombres de personas, números telefónicos, direcciones de correo, referencias a cuentas de redes sociales, certificados SSL, hashes, para todos los subdominios descubierto por Spiderfoot.
+
+\end{itemize}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 4 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{IV. Footprinting}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% PRINCIPAL %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Principal}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza un ping sobre el subdominio principal de la empresa, \textit{Traffic Factory}, trafficfactory.biz mediante el envío de un paquete ICMP para conocer la respuesta del servidor.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF2.png}
+    
+\vspace{0.1em}
+
+    Fig. 2: Ping a \textit{trafficfactory.biz}
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De esto se obtiene la dirección IP pública \textit{69.55.57.37}, la cual se mantiene como punto de inicio. Tras la respuesta del ping, se realiza una consulta vía nslookup a trafficfactory.biz, de la cual se obtiene lo siguiente:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 3: Petición de nslookup a trafficfactory.biz.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras la petición DNS, se confima la dirección IP pública asociada al dominio trafficfactory.biz. En principio este servidor no contaría con modalidad de equilibrio de carga ó cadena redundante de servidores con el fin de mantener la disponibilidad del servicio activa, o brindar un servicio mas rápido a los usuarios en distintas zonas del mundo gracias a una geolocalización más aficiente.
+
+\vspace{1em}
+
+\hspace{20pt}
+Por otro lado, se realiza la búsqueda de información hacia \textit{trafficfactory.biz} en la herramienta online \textit{https://bgp.he.net/}. De esto se obtiene lo siguiente:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 4: DNS información obtenida en \textit{https://bpg.he.net}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De la consulta anterior se aprecia que el sistema autónomo que contiene esta dirección IP pertenece a \textit{ServerStack, Inc.}, bajo el número de indentificación \textit{AS46652}. Tras ingresar al AS se obtiene lo siguiente:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 5: Información obtenida sobre AS46652 en \textit{https://bpg.he.net}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 6: Información obtenida sobre dominio trafficfactory.biz en \textit{https://bpg.he.net}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+La petición de whois realizada desde terminal sobre trafficfactory.biz se incluye dentro del directorio adjunto a esta práctica con el nombre \textit{whois\_trafficfactory.txt}. Por otro lado, se realiza una petición whois al sistema autónomo detallado anteriormente. El stdout de la ejecución de este comando se encuentra disponible como fichero adjunto bajo el nombre de \textit{whois\_AS46652.txt}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 7: Análisis whois de sistema autónomo AS46652.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% VERTICAL %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Reconocimiento vertical}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para comenzar con el reconocimiento vertical, se ejecuta una validación de los dns activos a través de la herramienta \textit{dnsvalidator}, actualizando nuestra lista de servidor DNS \textit{resolvers.txt}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 8: Validación de servidores DNS mediante dnsvalidator.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego de validar la lista de servidores DNS con dnsvalidator, se procede  a ejecutar consultasa la lista de servidores DNS definidos en el fichero resolvers.txt mediante la herramienta \textit{shuffledns}. El stdout de la ejecución de shuffledns es redirigido a un fichero llamado \textit{shuffledns\_out.txt}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 9: Ejecución de shuffledns con redirección del stdout a fichero shuffledns\_out.txt.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras la ejecución de shuffledns se obtiene el fichero mencionado anteriormente, el cual contiene 16 subdominios encontrados. A continuación se presenta una imagen con el resultado:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 10: Resultado de subdominios encontrados con shuffledns.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se realiza una inspección visual de los subdominios y se descubre que en su mayoría son redireccionamientos bajo código de estado 301 hacia el sitio principal \textit{www.trafficfactory.com} (a excepción de un par que se ven al final del footprinting). Además se corrobora mediante ping que la dirección IP de \textit{trafficfactory.biz} y \textit{www.trafficfactory.com} son la misma. Debido a esto, se comienza a utilizar para el resto de la recopilación de información el subdominio \textit{trafficfactory.com}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza el análisis con Google Analytics del subdominio definido en el párrafo anterior, pero no se encuentra nada sobre él.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF11.png}
+    
+\vspace{0.1em}
+    
+    Fig. 11: Ejecución de Google Analytics sobre \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Desde navegador se utiliza la extensión \textit{Wappalyzer} para analizar información sobre las tecnologías presentes en el sitio web. En la siguiente imagen solo se aprecian las princiapales, pero a continuación de esta se presenta una tabla con todo el contenido descubierto.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF12.png}
+    
+\vspace{0.1em}
+    
+    Fig. 12: Uso de extensión de navegador Wappalyzer sobre \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{1em}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Tipo de tecnología} & \textbf{Nombre} & \textbf{Versión}\\
+        \hline
+        Gestor de contenido & WordPress & 5.8.7 \\
+        \hline
+        Landing Page Builder & Elementor & 3.11.5 \\
+        \hline
+        Analítica & Site Kit & 1.110.0 \\
+        \hline
+        SEO & Yoast SEO & 19.4 \\
+         \hline
+        Blog & WordPress & 5.8.7 \\
+        \hline
+        \multirow{7}{*}{Librerías JavaScript} & Swiper & - \\
+        \cline{2-3}
+        & PubSubJS & 3.4.0 \\
+        \cline{2-3}
+        & JQuery UI & 1.12.1 \\
+        \cline{2-3}
+        & JQuery Migrate & 3.3.2 \\
+        \cline{2-3}
+        & core-js & 3.11.0 \\
+        \cline{2-3}
+        & Underscore.js & 1.13.1 \\
+        \cline{2-3}
+        & jQuery & 3.6.0 \\
+        \hline
+        \multirow{3}{*}{Tipografía} & Google Font API & - \\
+        \cline{2-3}
+        & Twitter Emoji (Twemoji) & 13.0.0 \\
+        \cline{2-3}
+        & Font Awesome & - \\
+        \hline
+        \multirow{5}{*}{Miscelánea} & Webpack & - \\
+        \cline{2-3}
+        & RSS & - \\
+        \cline{2-3}
+        & Open Graph & - \\
+        \cline{2-3}
+        & Popper & - \\
+        \cline{2-3}
+        & Module Federation & - \\
+        \hline
+        Proxy reverso & Nginx & - \\
+        \hline
+        \multirow{6}{*}{WordPress plugins} & Crocoblock JetElements & - \\
+        \cline{2-3}
+        & The Events Calendar & - \\
+        \cline{2-3}
+        & Elementor & 3.11.5 \\
+        \cline{2-3}
+        & Contact Form 7 & 5.5.6.1 \\
+        \cline{2-3}
+        & Yoast SEO & 19.4 \\
+        \cline{2-3}
+        & Site Kit & 1.110.0\\
+        \hline
+        Servidor web & Nginx & - \\
+        \hline
+        Lenguaje de programación & PHP & - \\
+        \hline
+        Base de datos & MySQL & - \\
+        \hline
+        Form builders & Contact Form 7 & 5.5.6.1 \\
+        \hline
+    \end{tabular}
+    \caption{Tecnologías del sitio web www.trafficfactory.com.}
+    \label{tab:mylabel}
+\end{table}
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego de ver las tecnologías del sitio web con Wappalyzer, se procede a obtener información sobre el dominio principal mediante el analisis de certificados TLS/SSL, con la finalidad de descubrir si estos contiene dominios o subdominios pertenecientes a \textit{Traffic Factory}. Para esto se utiliza la herramienta \textit{cero}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF13.png}
+    
+\vspace{0.1em}
+    
+    Fig. 13: Ejecución de cero hacia \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Como salida del comando anterior se obtiene \textit{traffic.factory.com}. Sobre esta dirección se realiza web scraping  a través de la herramienta \textit{katana}. 
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF14.png}
+    
+\vspace{0.1em}
+    
+    Fig. 14: Ejecución de katana sobre \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El fichero resultante llamado \textit{katana\_out.txt} se filtra con \textit{unfurl --unique domains} para obtener subdominios únicos. El resultado se guarda en un fichero llamado \textit{katana\_out-unfurl.txt}, el cual se encuentra adjunto a este informe.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF15.png}
+    
+\vspace{0.1em}
+    
+    Fig. 15: Filtrado de fichero \textit{katana\-out.txt} en \textit{katana\_out-sort-u.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Cabe destacar el descubrimiento de nueve direcciones de correo tras la aplicación de katana sobre \textit{trafficfactory.com}. Se tendrán presentes para la fase de OSINT.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF16.png}
+    
+\vspace{0.1em}
+    
+    Fig. 16: Correos encontrados tras ejecución de katana.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF17.png}
+    
+\vspace{0.1em}
+    
+    Fig. 17: Contenido de fichero \textit{katana\_out-unfurl.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Continuando, se aplica la herramienta \textit{ctrf} al dominio \textit{trafficfactory.com}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF18.png}
+    
+\vspace{0.1em}
+
+    Fig. 18: Aplicación de ctfr sobre \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El resultado de ctfr se filtra mediante el uso de unfurl, y la salida se redirige a un fichero de nombre \textit{ctfr\_out.txt} , se aplica la herramienta \textit{ctrf} al dominio \textit{trafficfactory.com}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF19.png}
+    
+\vspace{0.1em}
+    
+    Fig. 19: Aplicación de unfurl sobre salida de ctfr para \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF20.png}
+    
+\vspace{0.1em}
+    
+    Fig. 20: Contenido de fichero \textit{ctfr\_out.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se aplica la herramienta \textit{gau} sobre el dominio \textit{trafficfactory.com}. El resultado de dominios únicos se filtra con unfurl. La salida de la ejecución de este comando se presenta a continuación.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF21.png}
+    
+\vspace{0.1em}
+    
+    Fig. 21: Ejecución de gau sobre \textit{trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+La salida de gau generá el fichero \textit{gau\_out.txt}. Al filtrar este con unfurl se obtienen los siguientes subdominios:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF22.png}
+    
+\vspace{0.1em}
+    
+    Fig. 22: Filtrado de dominios sobre fichero \textit{gau\_out.txt} con unfurl.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tal como se aprecia en los ficheros \textit{gau\_out.txt} y \textit{ctfr\_out.txt}, los subdominios encontrados son principalmente dos: \textit{www.trafficfactory.com} y \textit{trafficfactory.com}. Ya definidos los 2 dominios especificos, se procede a pasar al Fingerprinting. Pero antes, se agrega información extra. 
+
+\vspace{1em}
+
+\hspace{20pt}
+Tras realizar al comienzo una inspección visual sobre los sudominios encontrados bajo el scope \textit{trafficfactory.biz}, se encontraron particularmente 2 sitios que no eran ni redireccionados al subdominio \textit{trafficfactory.com} ni tampoco arrojaban algún código de estado erroneo como los demás (ver Fig. 10, página 9). Esto son:
+
+\vspace{1em}
+
+\begin{itemize}
+	\item admin-php.trafficfactory.biz
+	\item main.trafficfactory.biz
+
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF23.png}
+    
+\vspace{0.1em}
+    
+    Fig. 23: Subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se utiliza la extensión de navegador \textit{shodan.io} para conocer información rápida sobre el sitio. De esto se obtiene que la dirección IP bajo la que corre el dominio \textit{admin-php.trafficfactory.biz} es la \textit{69.55.57.49}, al igual que la del subdominio \textit{main.trafficfactory.biz}. 
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=12cm]{img/TF24.png}
+    
+\vspace{0.1em}
+    
+    Fig. 24: Panel de shodan.io para \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=12cm]{img/TF25.png}
+    
+\vspace{0.1em}
+    
+    Fig. 25: Panel de shodan.io para \textit{main.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Por otro lado, se analiza el subdominio  \textit{data.trafficfactory.biz} y \textit{store.trafficfactory.biz} (este último redirecciona al subdominio \textit{store.trafficfactory.biz}). Al utilizar la extensión de navegador \textit{shodan.io} sobre \textit{data.trafficfactory.biz} se obtiene que posee vulnerabilidades detectas bajo diferentes CVE. Tras investigar los códigos CVE, se determina que la vulnerabilidad presente en el sistema corresponde a que la función de sistema  process\_open en sftp-server.c a través de OpenSSH no evita correctamente las operaciones de escritura en el modo readonly a nivel de sistema, permitiendo que un atacante cree ficheros de longitud cero internamente.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=12cm]{img/TF26.png}
+    
+\vspace{0.1em}
+    
+    Fig. 26: Vulnerabilidades marcadas para subdominio \textit{store.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=12cm]{img/TF27.png}
+    
+\vspace{0.1em}
+    
+    Fig. 27: Vulnerabilidades marcadas para subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, se modifica el contenido del fichero \textit{gau\_out.txt} para agregar los subdominios extras descubiertos. Como \textit{store.trafficfactory.biz} redirecciona al subdominio \textit{data.trafficfactory.biz}, es solo este último el que se agrega al contenido del fichero.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF28.png}
+    
+\vspace{0.1em}
+    
+    Fig. 28: Subdominios incorporados de fichero gau\_out.txt.
+\end{center}
+
+\vspace{1em}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{IP Address} & \textbf{Subdomains} \\
+        \hline
+        \multirow{3}{*}{69.55.57.36} & data.trafficfactory.biz \\
+        \cline{2-2}
+        & store.trafficfactory.biz \\
+        \hline
+        \multirow{3}{*}{69.55.57.37} & www.trafficfactory.com \\
+        \cline{2-2}
+        & trafficfactory.com \\
+        \hline
+        \multirow{3}{*}{69.55.57.49} & admin-php.trafficfactory.biz \\
+        \cline{2-2}
+        & main.trafficfactory.biz \\
+        \hline
+    \end{tabular}
+    \caption{Direcciones IPs y subdominios obtenidos como scope final.}
+    \label{tab:mylabel}
+\end{table}
+
+\vspace{1em}
+
+\hspace{20pt}
+Teniendo esto en cuenta, se juntan todos los ficheros en uno solo llamado \textit{subdomains.txt}, el cual se filtra por expresiones regulares para obtener solo dominios y subdominios únicos. Este será utilizado para realizar el fingerprinting sobre las direcciones de \textit{Traffic Factory}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF29.png}
+    
+\vspace{0.1em}
+    
+    Fig. 29: Scope final fichero subdomains.txt.
+\end{center}
+
+\vspace{2em}
+
+
+\hspace{20pt}
+A este fichero se le aplica la herramienta \textit{gowitness}, con la finalidad de realizar screenshots de estos sitios webs. Las imagenes generadas se adjuntan como material extra a este informe en el directorio llamado \textit{screenshots}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF30.png}
+    
+\vspace{0.1em}
+    
+    Fig. 30: Uso de gowitness sobre fichero \textit{subdomains.txt}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF31.png}
+    
+\vspace{0.1em}
+    
+    Fig. 31: Contenido directorio \textit{screenshots} realizadas por gowitness.
+\end{center}
+
+\vspace{2em}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 5 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{V. Fingerprinting}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para convertir los subdominios y dominios presentes en el fichero \textit{subdomains.txt} a sus direcciones IP, se crea un script en bash llamado \textit{dig.sh}, el cual realizará la conversión de estos a direcciones IP, y filtrará los resultados únicos mediante sort -u.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF32.png}
+    
+\vspace{0.1em}
+    
+    Fig. 32: Script \textit{dig.sh} para conversión y filtrado de subdominios a direcciones IP.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El resultado de la ejecución del script \textit{dig.sh} es el siguiente:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF33.png}
+    
+\vspace{0.1em}
+    
+    Fig. 33: Contenido fichero \textit{IP\_address.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se filtra el contenido del fichero IP\_address.txt con la finalidad de obtener solamente las direcciones IP únicas. El contenido filtrado se guarda en un fichero llamado IP\_ok.txt.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF34.png}
+    
+\vspace{0.1em}
+    
+    Fig. 34: Contenido fichero \textit{IP\_ok.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se aplica \textit{wafw00f} para descubrir la existencia de posibles firewalls de aplicaciones web instaurados en las diferentes direcciones IPs. Para esto se crea un script llamado \textit{wafw00f.sh}, el cual lee progresivamente el fichero \textit{IP\_ok.txt}.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF35.png}
+    
+\vspace{0.1em}
+    
+    Fig. 35: Script \textit{wafw00f.sh}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras la ejecución de \textit{wafw00f} se obtiene el fichero \textit{wafw00f\_out.txt}, el cual se incopora como material adjunto al informe. La información que se obtiene de este fichero se puede dividir en dos secciones:
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Para las direcciones IP \textit{141.0.168.199}, \textit{141.0.174.196}, \textit{64.233.190.121}, \textit{85.17.13.169} y \textit{87.248.221.254} se obtiene un error de perdida de conexión. Esto indica que el servidor tiene un tiempo de espera para validar la conexión demasiado corto o se están rechazando las peticiones realizadas.
+	\item Para las direcciones IP  \textit{69.55.57.36}, \textit{69.55.57.37} y \textit{69.55.57.49}, tras 7 peticiones realizadas no se encontró un firewall presente. Estas son las IPs de las URL principales que se detallaron al final del módulo de \textit{Footprinting} en el capítulo anterior.
+\end{itemize}
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego, se realiza un análisis de posibles vulnerabilidades webs mediante la herramienta \textit{nuclei} sobre cada una de las IPs presentes en el fichero \textit{IP\_out.txt}. El contenido de cada análisis se adjunta como documentación extra al informe, pero se destaca un dato encontrado.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para la dirección IP \textit{69.55.57.37} se descubre la vulnerabilidad \textit{CVE-2021-36368}, que presenta un error sobre OpenSSH para versiones anteriores a la 8.9, para conexionesautenticadas mediante clave pública.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF36.png}
+    
+\vspace{0.1em}
+    
+    Fig. 36: Reporte de nuclei para IP \textit{69.55.57.37}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Mas adelante se entregará mayor información sobre este descubrimento, a medida que se obtenga mayor información sobre esta.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para continuar, se realiza la ejecución de nmap sobre las direcciones IP del fichero \textit{IP\_ok.txt}. En primera instancia se realiza un escaneo general de puertos abiertos a través del comando \textit{nmap <ip\_address> -sS -p- --open -min-rate 1000 -vvv -n -Pn -O -oG allPorts}. Luego, mediante un arreglo en bash realizado en el fichero \textit{. zshrc}, se pueden extraen los puertos encontrados en el output del primer escaneo de nmap a través de la función \textit{extractPorts} sobre el fichero \textit{allPorts}. Posteriormente, se utiliza el comando \textit{nmap <ip\_address> -sC -sV -p<puertos,encontrados> -O -oN target} para realizar un escaneo mas exhaustivo sobre los puertos encontrados.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF37.png}
+    
+\vspace{0.1em}
+    
+    Fig. 37: Función \textit{extractPorts} en fichero \textit{.zshrc}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se realiza un escaneo general de puertos sobre las direcciones IP \textit{141.0.168.199}, \textit{141.0.174.196}, \textit{85.17.13.169} y \textit{87.248.221.254}. En ninguna de estas direcciones se descubren puertos abiertos.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF38.png}
+    
+\vspace{0.1em}
+    
+    Fig. 38: Escaneo general de puertos sobre IP \textit{141.0.168.199}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF39.png}
+    
+\vspace{0.1em}
+    
+    Fig. 39: Escaneo general de puertos sobre IP \textit{141.0.174.196}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF40.png}
+    
+\vspace{0.1em}
+    
+    Fig. 40: Escaneo general de puertos sobre IP \textit{85.17.13.169}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF41.png}
+    
+\vspace{0.1em}
+    
+    Fig. 41: Escaneo general de puertos sobre IP \textit{87.248.221.254}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se realiza el escaneo sobre las direcciones IP restantes. Al escanear estas direcciones sí se descubren puertos abiertos, por lo que cada una se escanea nuevamente enfocando este sobre los puertos detectados.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF42.png}
+    
+\vspace{0.1em}
+    
+    Fig. 42: Escaneo general de puertos sobre IP \textit{64.233.190.121}. Puertos 80 y 443 abiertos.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF43.png}
+    
+\vspace{0.1em}
+    
+    Fig. 43: Escaneo especifico de puertos sobre IP \textit{64.233.190.121}. Servicios http y https en ejecución sobre sistema operativo Linux 2.6.22.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF44.png}
+    
+\vspace{0.1em}
+    
+    Fig. 44: Escaneo general de puertos sobre IP \textit{69.55.57.36}. Puertos 22, 80, 443, 5666, 20048, 35927 y 36662 abiertos.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF45.png}
+    
+\vspace{0.1em}
+    
+    Fig. 45: Escaneo especifico de puertos sobre IP \textit{69.55.57.36}. Servicios ssh, http, https y rpc en ejecución sobre sistema operativo Linux 3.10.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF46.png}
+    
+\vspace{0.1em}
+    
+    Fig. 46: Escaneo general de puertos sobre IP \textit{69.55.57.37}. Puertos 80, 443 y 5666 abiertos.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF47.png}
+    
+\vspace{0.1em}
+    
+    Fig. 47: Escaneo especifico de puertos sobre IP \textit{69.55.57.37}. Servicios http, https y tcpwrapped en ejecución sobre sistema operativo Linux 3.10.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF48.png}
+    
+\vspace{0.1em}
+    
+    Fig. 48: Escaneo general de puertos sobre IP \textit{69.55.57.49}. Puertos 25, 80 y 443 abiertos.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF49.png}
+    
+\vspace{0.1em}
+    
+    Fig. 49: Escaneo especifico de puertos sobre IP \textit{69.55.57.49}. Servicios smtp, http y https en ejecución sobre sistema operativo Linux 3.10.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De este escaneo se obtiene una visión inicial para el posterior análisis de vulnerabilidades, teniendo en cuenta que debido a la vulnerabilidad descubierta en \textit{data.trafficfactory.com}, existe la probablidad de vovler a descubrir distintos tipos de vulnerabilidades al aplicar Greenbone en el capítulo siguiente.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 6 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{VI. Análisis de vulnerabilidades}
+
+\vspace{2em}
+
+\newsection{1.	Análisis con Greenbone}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para llevar a cabo el análisis de vulnerabilidades sobre el scope seleccionado, se utiliza el sistema \textit{Greenbone Enterprise Appliance} desde una máquina virtual con dicho sistema operativo. 
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza el análisis de vulnerabilidades para la 4 direcciones IP en las cuales se encontraron puertos abiertos durante el escaneo con nmap. Los detalles generales se presentan a continuación:
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF50.png}
+    
+\vspace{0.1em}
+    
+    Fig. 50: Análisis de vulnerabilidades para direcciones IP de fichero \textit{IP\_address.txt}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF51.png}
+    
+\vspace{0.1em}
+    
+    Fig. 51: Detalle general analisis de vulnerabilidades para direcciones IP de fichero \textit{IP\_address.txt}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Debido que para la dirección \textit{69.55.57.49} no se obtuvieron mayores resultados en la detección de vulnerabilidades, a continuación se entregan los resultados generales de las 3 IPs restantes. Cabe destacar que los reportes de las direcciones IP en donde se encontraron vulnerabilidades estará, adjuntos como material extra a este informe.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF52.png}
+    
+\vspace{0.1em}
+    
+    Fig. 52: Vulnerabilidad \textit{TCP Timestamps Information Disclosure} en IP \textit{64.233.190.121}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF53.png}
+    
+\vspace{0.1em}
+    
+    Fig. 53: Vulnerabilidades \textit{TCP Timestamps Information Disclosure} e \textit{ICMP Timestamp Reply Information Disclosure} en IP \textit{69.55.57.36}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF54.png}
+    
+\vspace{0.1em}
+    
+    Fig. 54: Vulnerabilidades \textit{TCP Timestamps Information Disclosure} e \textit{ICMP Timestamp Reply Information Disclosure} en IP \textit{69.55.57.37}.
+\end{center}
+
+\vspace{2em}
+
+\newsection{2.	Análisis con WPScan}
+
+\vspace{1em}
+
+\hspace{20pt}
+Ahora bien, debido a que los sitios webs están gestionados mediante WordPress (información obtenida anteriormente en capítulo III \textit{Footprinting}, se realiza análisis de los sitios asociados a las direcciones IPs del fichero \textit{IP\_address.txt} mediante escaneo con \textit{WPScan}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Con la siguientes tabla e imagenes se plantean los sitios a escanear, en función de la conversión de la IP a su URL correspondiente.  Como se habia destacado anteriormente, solo se toman en cuenta las direcciones IP \textit{69.55.57.36}, \textit{69.55.57.37}, \textit{69.55.57.49} y  \textit{64.233.190.121} debido a que son las únicas de las que se obtuvo algún tipo de respuesta o información.
+
+\vspace{1em}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{IP Address} & \textbf{Subdomains} & \textbf{Wordpress} \\
+        \hline
+        \multirow{3}{*}{69.55.57.36} & data.trafficfactory.biz & No \\
+        \cline{3-3}
+        & store.trafficfactory.biz & No \\
+        \hline
+        \multirow{6}{*}{69.55.57.37} & trafficfactory.com & Redirect to www.trafficfactory.com \\
+        \cline{3-3}
+        & www.trafficfactory.com & Si \\
+        \cline{3-3}
+        & forum5.trafficfactory.biz & Redirect to www.trafficfactory.com \\
+         \cline{3-3}
+        & tutorial.trafficfactory.biz & Redirect to www.trafficfactory.com \\
+         \cline{3-3}
+        & photobook.trafficfactory.biz & Redirect to www.trafficfactory.com \\
+         \cline{3-3}
+        & nmedia.trafficfactory.biz & Redirect to www.trafficfactory.com \\
+        \hline
+        \multirow{4}{*}{69.55.57.49} & admin-php.trafficfactory.biz & No \\
+        \cline{3-3}
+        & main.trafficfactory.biz & No \\
+        \cline{3-3}
+        & support.trafficfactory.biz & No \\
+        \cline{3-3}
+        & dmca.trafficfactory.biz & No \\
+        \hline
+        64.233.190.121 & mail.trafficfactory.biz & No \\
+        \hline
+    \end{tabular}
+    \caption{Direcciones IPs y subdominios obtenidos como scope final.}
+    \label{tab:mylabel}
+\end{table}
+
+\vspace{1em}
+
+\hspace{20pt}
+Debido a la información planteada en al tabla, solo se escanea mediante \textit{WPScan} el dominio principal, ya que los demeásen su mayoría se redireccionan a este.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF55.png}
+    
+\vspace{0.1em}
+    
+    Fig. 55: Ejecución de escaneo mediante \textit{WPScan} hacia dominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF56.png}
+    
+\vspace{0.1em}
+    
+    Fig. 56: Resultados escaneo mediante \textit{WPScan} hacia dominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Estos resultados se adjuntan como fichero extra al informe con el nombre \textit{wpscan\_www-trafficfactory-com.txt}. Se aprecia que mayor información no se obtiene de este escaneo, excepto por la alerta que se destaca para el tema en uso \textit{jupiterx}. Tal cual se indica el bloque de información, la versión usada no es la más actual (\textit{3.5.6}), lo cual da un indicio para buscar información sobre alguna posible vulnerabilidad se presente por temas desactualizados de WordPress. 
+
+\vspace{1em}
+
+\hspace{20pt}
+Tras realizar una búsqueda por internet, nos encontramos que el mantener desactualizado el tema \textit{jupiterx} en WordPress, especificamante por debajo de la verisón 6.10.1 para \textit{jupiter theme} y 2.0.7 para \textit{JupiterX Core Plugin}, puede permitir que \textit{''cualquier atacante autenticado, incluido un atacante a nivel de suscriptor o de cliente, obtenga privilegios administrativos a través de "abb\_uninstall\_template" (para ambos temas) y "jupiterx\_core\_cp \newline \_uninstall\_template" (solo para JupiterX Core)''}. (Link de información: \href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-1654}{CVE-2022-1654})
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF57.png}
+    
+\vspace{0.1em}
+    
+    Fig. 57: CVE-2022-1654.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Por otro lado, en el mismo bloque informativo sobre jupiterx se presenta la URL \newline
+\textit{https://www.trafficfactory.com/wp-content/themes/jupiterx/}, indicando el sitio de alojamiento de este tema en el servidor web. Esto se podría utilizar para buscar algún tipo de vulnerabilidad mediante técnicas de pentesting web.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para continuar con el análisis de vulnerabilidades, se utiliza la herramienta \textit{testssl} para descubrir si se encuentra alguna vulnerabilidad en la configuración SSL, en los siguientes dominios:
+
+\vspace{1em}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|}
+        \hline
+        \textbf{Domains} \\
+        \hline
+        data.trafficfactory.biz  \\
+        \hline
+        www.trafficfactory.com  \\
+        \hline
+        admin-php.trafficfactory.biz  \\
+        \hline
+        main.trafficfactory.biz  \\
+        \hline
+        support.trafficfactory.biz  \\
+        \hline
+        dmca.trafficfactory.biz  \\
+        \hline
+    \end{tabular}
+    \caption{Direcciones IPs y subdominios obtenidos como scope final.}
+    \label{tab:mylabel}
+\end{table}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se generan ficheros para el análisis realizado sobre cada uno de los dominios, los cuales se adjuntan como contenido extra al informe. (Archivos que comienzan por el nombre \textit{TEST-SSL\_<subdomain>.txt}. Los descubrimientos realizados se entregan a continuación:
+
+\vspace{1em}
+
+\begin{itemize}
+	\item Para el subdominio \textit{data.trafficfactory.biz} no se detecta ninguna vulnerabilidad. 
+	\item Para el subdominio \textit{www.trafficfactory.com} se detectan varias alertas de vulnerabilidades experimentales las cuales se pueden apreciar en el fichero adjunto del subdominio, pero principalmente se detecta la presencia de la vulnerabilidad \textit{CVE-2016-6329}. Esta vulnerabilidad indica que, \textit{cuando OpenVPN utiliza cifrados de bloque de 64 bits en los certificados, facilita la posibilidad que atacantes remotos obtengan datos de texto sin cifrar a través de un ataque de cumpleaños contra una sesión cifrada de larga duración, como lo demuestra una sesión HTTP sobre OpenVPN usando Blowfish en modo CBC, también conocido como un ataque "Sweet32"}.
+	\item Para los subdominios \textit{admin-php.trafficfactory.biz}, \textit{main.trafficfactory.biz}, \newline \textit{dmca.trafficfactory.biz} y \textit{support.trafficfactory.biz} se detecta la misma vulnerabilidad (\textit{CVE-2016-6329}), en conjunto con otras de carácter experimental.
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF58.png}
+    
+\vspace{0.1em}
+    
+    Fig. 58: Información sobre vulnerabilidad \textit{CVE-2016-6329} para los subdominios indicados anteriormente.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 7 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{VII. OSINT}
+
+\vspace{2em}
+
+\newsection{1.	Uso de Maltego}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para llevar a cabo el proceso de recopilación de información se utilizarán principalmente los subdominios \textit{www.trafficfactory.com} y \textit{admin-php.trafficfactory.biz}, debido a que uno es el dominio principal de la empresa investigada y el otro apunta a un servidor con login para usuarios de la empresa a través de un sitio en php.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para comenzar, se utiliza la herramienta \textit{Maltego}. A esta se le instalan una serie de plugins como \textit{iHaveBeenPwdned}, \textit{Shodan.io}, entre otros, con la finalidad de potenciar la obtención de información sobre estos dominios. Por otro lado, se informa que los escaneos realizados sobre ambos sobdominios se encuentran adjuntos como material de apoyo a este informe.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF59.png}
+    
+\vspace{0.1em}
+    
+    Fig. 59: Plugins instalados en Maltego.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De la información obtenida con el análisis de \textit{Maltego} se destacan muchas direcciones de correo,  correos con conversaciones internas y otros con referencia a malware, cuentas en distintas plataformas y redes sociales, ID de cuentas de usuarios, números telefónicos, compañías anexas, distintos registros de servidores DNS, enlaces a sitios webs, distintos tipos de documentos como words o pdfs, hashes, entre mucha mas información. Detallar que el documentar toda esta generaría hojas y hojas de información, por lo que solo se adjuntan como material anexo los ficheros \textit{admin-php.trafficfactory.biz.mtgl} y \textit{www.trafficfactory.com.mtgl} como respaldo de cada uno de los escaneos. También se destaca que la información obtenida mediante Maltego para ambos subdominios no es toda la que se puede obtener ya que esto puede continuar en el tiempo, pero se detuvo ya que al momento de realizar las diferentes peticiones de los escaneos para los análisis de los diferentes puntos (servidores de correo, servidores DNS, dominios y subdominios), la cantidad de peticiones enviada fue tanta que el servicio de internet se perdió en numerosas ocaciones.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF60.png}
+    
+\vspace{0.1em}
+    
+    Fig. 60: Análisis con Maltego para subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF61.png}
+    
+\vspace{0.1em}
+    
+    Fig. 61: Análisis con Maltego para subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\newsection{2.	Uso de Spiderfoot}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza la obtención de información mediante el uso de la herramienta \textit{Spiderfoot} hacia los dominios presentes en la tabla 4. Estos escaneos se adjuntan como material extra a este informe en format .json.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF62.png}
+    
+\vspace{0.1em}
+    
+    Fig. 62: Escaneo a subdominios con Spiderfoot.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El primer subdominio a mostrar es \textit{dmca.trafficfactory.biz}. Se obtiene información de todo tipo, desde nombres de compañia hasta servidores wen, incluidos direcciones de correo y números telefónicos. Además se indica una correlación de riesgo bajo, la cual hace referencia a que un sitio cohospedado es considerado malicioso por múltiples fuentes: trafficfactory.biz
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF63.png}
+    
+\vspace{0.1em}
+    
+    Fig. 63: Tipos de datos encontrados en escaneo a subdominio \textit{dmca.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF64.png}
+    
+\vspace{0.1em}
+    
+    Fig. 64: Correlación de bajo riesgo alertada para subdominio \textit{dmca.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF65.png}
+    
+\vspace{0.1em}
+    
+    Fig. 65: Número telefónico y uno de los mails encontrados para subdominio \textit{dmca.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF66.png}
+    
+\vspace{0.1em}
+    
+    Fig. 66: Puertos abiertos para subdominio \textit{dmca.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El segundo subdominio a mostrar es \textit{support.trafficfactory.biz}. Al igual que con el subdominio anterior, se obtiene información de todo tipo. Además se indican siete correlaciones de riesgo bajo. En este subdominio, al igual que en el anterior, debido a que ambos comparten la misma IP (\textit{69.55.57.49}), este posee los mismos puertos abiertos.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF67.png}
+    
+\vspace{0.1em}
+    
+    Fig. 67: Tipos de datos encontrados en escaneo a subdominio \textit{support.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF68.png}
+    
+\vspace{0.1em}
+    
+    Fig. 68: Correlaciones de bajo riesgo alertadas para subdominio \textit{support.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El tercer subdominio es \textit{main.trafficfactory.biz}. Al igual que con el subdominio anterior, se obtiene información de todo tipo. Además se indican tres correlaciones de riesgo bajo y seis alertas informativas debido a dominios similares a \textit{trafficfactory.*}. En la información obtenida se destacan direcciones de correo, los mismos puertos abiertos que en los primeros dos subdominios debido a la igualdad en dirección IP (\textit{69.55.57.49}), hashes y usuarios para cuentas de redes sociales.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF69.png}
+    
+\vspace{0.1em}
+    
+    Fig. 69: Tipos de datos encontrados en escaneo a subdominio \textit{main.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF70.png}
+    
+\vspace{0.1em}
+    
+    Fig. 70: Correlaciones de  bajo riesgo y alertas informativas alertadas para subdominio \textit{main.trafficfactory.biz}.
+\end{center}
+
+\newpage
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF71.png}
+    
+\vspace{0.1em}
+    
+    Fig. 71: Usuarios de redes sociales para subdominio \textit{main.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Como cuarto subdominio se tiene \textit{main.trafficfactory.biz}. Se obtiene información de direcciones de correo, números de teléfono, hashes, certificados SSL, puertos abiertos (estos son los mismos que para los tres primeros subdominios, debido a que la dirección IP es la misma), entre otros. Además se indica una correlación de riesgo bajo.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF72.png}
+    
+\vspace{0.1em}
+    
+    Fig. 72: Tipos de datos encontrados en escaneo a subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF73.png}
+    
+\vspace{0.1em}
+    
+    Fig. 73: Correlación de bajo riesgo detectada para subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF74.png}
+    
+\vspace{0.1em}
+    
+    Fig. 74: Certificado SSL de subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\newpage
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF75.png}
+    
+\vspace{0.1em}
+    
+    Fig. 75: Usuarios de redes sociales para subdominio \textit{main.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El quinto subdominio es \textit{data.trafficfactory.biz}. De este se obtiene información de direcciones de correo, números de teléfono, hashes, certificados SSL, puertos abiertos, entre otros. Además se indica una correlación de riesgo bajo y dos alertas informativas que indican que la versión del software SSH debe ser actualizada.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF76.png}
+    
+\vspace{0.1em}
+    
+    Fig. 76: Tipos de datos encontrados en escaneo a subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF77.png}
+    
+\vspace{0.1em}
+    
+    Fig. 77: Correlación de bajo riesgo y alertas informativas detectadas para subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF78.png}
+    
+\vspace{0.1em}
+    
+    Fig. 78: Número de teléfono encontrado para subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF79.png}
+    
+\vspace{0.1em}
+    
+    Fig. 79: Puertos abiertos del subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF80.png}
+    
+\vspace{0.1em}
+    
+    Fig. 80: Uno de los certificados SSL encontrados para el subdominio \textit{data.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Por último, el sexto subdominio es el principal, \textit{www.trafficfactory.com}. De este se obtiene información de direcciones de correo, números de teléfono, hashes, certificados SSL, puertos abiertos, entre otros. Además se indican once correlaciones de riesgo bajo y doce alertas informativas que indican diversa información.
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF81.png}
+    
+\vspace{0.1em}
+    
+    Fig. 81: Tipos de datos encontrados en escaneo a subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF82.png}
+    
+\vspace{0.1em}
+    
+    Fig. 82: Correlación de bajo riesgo y alertas informativas detectadas para subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF83.png}
+    
+\vspace{0.1em}
+    
+    Fig. 83: Uno de los números de teléfono encontrados para subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF84.png}
+    
+\vspace{0.1em}
+    
+    Fig. 84: Puertos abiertos del subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF85.png}
+    
+\vspace{0.1em}
+    
+    Fig. 85: Uno de los certificados SSL encontrados para el subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\newsection{3.	Dorking}
+
+\vspace{1em}
+
+\hspace{20pt}
+Continuando con el proceso de OSINT, se utilizan motores de búsqueda aplicando Google Dorks para obtener información sobre ciertos subdominios. Para esto, como dork \textit{SITE} se utilizan los subdominios \textit{www.trafficfactory.com}, \textit{admin-php.trafficfactory.biz} y \newline \textit{main.trafficfactory.biz}. Las direcciones URL descubiertas se adjuntan como documento dorking al informe. Se destaca principalmente la obtención general de información vía este medio, como tutoriales de cambio de claves o ayudas de procesos hacia el usuario vía documentos PDF, sitios de login y noticias informativas. Las imagenes a continuación son solo los resultados obtenidos, ya que de antemano se probó con una variada cantidad de google dorks sin obtener resultados, u obteniendo resultados repetidos.
+
+\newpage
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF86.png}
+    
+\vspace{0.1em}
+    
+    Fig. 86: Dorking sobre subdominio \textit{main.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF87.png}
+    
+\vspace{0.1em}
+    
+    Fig. 87: Dorking sobre subdominio \textit{www.trafficfactory.com}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+	\includegraphics[width=14cm]{img/TF88.png}
+    
+\vspace{0.1em}
+    
+    Fig. 88: Dorking sobre subdominio \textit{admin-php.trafficfactory.biz}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se realiza la búsqueda de documentos pertenecientes a Google Drive para los distintos subdominios pertenecientes al fichero \textit{subdomains.txt}, pero no se encuentran resultados para ninguno de ellos.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para los distintos documentos encontrados en Maltego y a través del Dorking realizado por Google, se realizó búsqueda de metadatos pero no fué documentada, ya que no se descubrió nada relevante. Cabe destacar eso si, que no realizo el análisis sobre todos los documentos encontrados.
+
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%          END CONTENTS         %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
