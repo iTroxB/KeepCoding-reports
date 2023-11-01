@@ -1,0 +1,3020 @@
+\documentclass[12pt,oneside,a4paper]{book}
+\usepackage[%
+  a4paper,%
+  left = 20mm,%
+  right = 20mm,%
+  textwidth = 178mm,%
+  top = 40mm,%
+  bottom = 30mm,%
+  %heightrounded,%
+  headheight=70pt,%
+  headsep=25pt,%
+]{geometry}
+\usepackage{graphicx}
+\usepackage[sfdefault,light]{FiraSans}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    allcolors  = link-blue, 
+}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{color,colortbl}
+
+\definecolor{link-blue}{RGB}{6,69,173}
+\definecolor{dark-green}{RGB}{52,133,62}
+\definecolor{light-blue}{RGB}{127,180,240}
+\definecolor{dark-blue}{RGB}{72,120,224}
+\definecolor{heading-grey}{RGB}{128,128,128}
+\definecolor{heading2-grey}{RGB}{200,200,200}
+\definecolor{Critical}{RGB}{192,0,0}
+\definecolor{High}{RGB}{255,0,0}
+\definecolor{Medium}{RGB}{255,192,0}
+\definecolor{Low}{RGB}{255,255,0}
+\definecolor{Informational}{RGB}{94,185,255}
+
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{array,booktabs}
+\usepackage{fancyhdr}
+\renewcommand{\footrulewidth}{0.2pt}
+\renewcommand{\headrulewidth}{0.2pt}
+\fancyfoot{}
+\fancyhead{}
+\fancyfoot[C]{Confidential}
+\fancypagestyle{plain}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey} \\ Información Confidencial \\ (\href{https://keepcoding.io}{keepcoding.io})}
+    \fancyhead[R]{\includegraphics[width=1.5cm]{img/kp1.png}}
+}
+\fancypagestyle{fancy}{
+    \fancyfoot[R]{\\ \textcolor{heading-grey}{\newline Page \thepage\ of \pageref{LastPage}}}
+    \fancyfoot[C]{\textcolor{heading-grey}{ Información Confidencial \\ (\hyperlink{https://keepcoding.io}{keepcoding.io})}}
+    \fancyhead{}
+}
+\thispagestyle{fancy}\pagestyle{plain}
+
+\newcommand{\email}[1]{\href{mailto://#1}{#1}}
+\newcommand{\newchapter}[1]{{\section*{#1}
+\addcontentsline{toc}{chapter}{#1}}}
+\newcommand{\newsection}[1]{{\subsection*{#1}
+\addcontentsline{toc}{section}{#1}}}
+\newcommand{\newsubsection}[1]{{\subsubsection*{#1}
+\addcontentsline{toc}{subsection}{#1}}}
+\usepackage[skip=10pt plus1pt, indent=0pt]{parskip}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\makeatletter
+\renewcommand\tableofcontents{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \section*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+    \if@restonecol\twocolumn\fi
+    }
+\makeatother
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\huge\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\Large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\large\bfseries}{\thesubsubsection}{1em}{}
+
+% \titleformat{command}[shape]{format}{label}{sep}{before}[after]
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+
+\titlespacing{\section}{0pt}{1em}{0.5em}
+\titlespacing{\subsection}{0pt}{0em}{0.25em}
+
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+\def\projectno{897-19}
+
+
+\begin{document}
+
+\renewcommand{\headrulewidth}{0pt}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           BEGIN TITLE PAGE          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{titlepage}
+   \thispagestyle{fancy}
+   \begin{center}
+        \vspace{5em}
+   
+        \centering\includegraphics[width=12cm]{img/kp2.png}
+
+        \vspace{5em}
+
+        \huge{\textbf{Práctica de módulo}}
+
+        \vspace{2em}
+        
+        \huge{\textbf{Levantamiento infraestructura de red en base a firewall pfSense, con sistema ELK en AWS cloud y honeypot T-POT. \\}}
+        
+        \vspace{5em}
+
+        \Large{por Javier González Espinoza}
+
+        \vspace{6em}
+        
+   \end{center}
+
+    \normalsize{Date: \today \\
+     Módulo: BLUE TEAM \\
+     Profesor: Ignacio Alonso Neila}
+    
+\end{titlepage}
+
+\renewcommand{\headrulewidth}{0.2pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           END TITLE PAGE           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%         COMIENZO CONTENIDOS        %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CAPÍTULO 1 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{I.  Objetivos y detalles de la práctica}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% OBJETIVOS %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Objetivos de la práctica}
+
+\vspace{1em}
+
+\hspace{20pt}
+El objetivo principal de este infome es documentar el proceso realizado para montar la infraestructura de red propuesta por el profesor en clases y documentar en detalle todo el procedimiento realizado, incluyendo algunas pruebas y la instalación de numerosos servicios y sistemas operativos, con el fin de dejar constancia de este y generar un respaldo de la creación de este tipo de sistemas.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% DETALLES %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Detalles de la práctica}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para el montaje de la infraestructura de red se deben tener en cuenta los siguientes puntos:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item Creación de un firewall pfSense en bridge al router de casa, que conecte 3 redes internas llamadas LAN, DMZ1 y DMZ2.
+    \item Un equipo W10 en LAN, un stack ELK en DMZ1 y un grupo de honeypots en DMZ2.
+    \item Transmitir los logs de los honeypots al ELK stack, pero los honeypots no deben tener acceso a las otras redes (solo para transmitir logs) pero los honeypots deben ser accesible desde la red WAN (reglas de firewall y portforwarding hacia los honeypots).
+    \item El servidor ELK debe almacenar y poder visualizar los diferentes logs de los honeypots.
+    \item El W10 debe poder conectarse a ELK vía Kibana.
+\end{itemize}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 2 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{II. Planteamiento de la infraestructura}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Diagrama de la infraestructura}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para el presente trabajo práctico se plantea la siguiente estructura de red a montar. Las modificaciones realizadas en función de la estructura original se realizan con el objetivo de ir un poco mas en profundidad con este tema y ver como se comportan los sistemas monitoreados por un SIEM y con un honeypot disponible, en un entorno de práctica.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=16cm]{img/Net-arch.png}
+    
+\vspace{0.1em}
+    
+    Fig. 1: Diagrama infraestructura de red a montar.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2. Explicación de la infraestructura}
+
+\vspace{1em}
+
+\hspace{20pt}
+La infraestructura planteada anteriormente se describe en las siguientes partes:
+
+\vspace{2em}
+
+%%%%% SUBSECTION A %%%%%
+\newsubsection{a) Firewall pfSense}
+
+\vspace{1em}
+
+\hspace{20pt}
+Máquina virtual con sistema pfSense, el cual es utilizado como router interno y firewall de la arquitectura planteada. Tendrá configurada la disposición de 3 redes internas, llamadas \textit{LAN}, \textit{DMZ1} y \textit{DMZ2}. Todo tipo de configuración realizada sobre este se hará interfaz gráfica o web server.
+
+\vspace{2em}
+
+%%%%% SUBSECTION B %%%%%
+\newsubsection{b) Red LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Red interna administrada por pfSense, la cual poseerá un dispositivo con \textit{Windows 10}. La función de este equipo es acceder mediante internet a servicios como Elastic establecido en la nube de AWS por medio de \textit{Kibana}.
+
+\vspace{2em}
+
+%%%%% SUBSECTION C %%%%%
+\newsubsection{c) Red DMZ1}
+
+\vspace{1em}
+
+\hspace{20pt}
+Red interna administrada por pfSense, la cual poseerá un dispositivo virtualizado con sistema operativo \textit{Kali Linux}. En este se encontrará en ejecución un servidor apache corriendo el puerto 8888 (esto para no generar colisión de puertos con los honeypots levantados a través de T-POT en la red DMZ2 y darle prioridad al puerto 80 hacia estos servicios, al realizar el port forwarding desde PFSense). Además posee diversas instalaciones como el IDS Suricata o agentes de control y monitorización realizadas por \textit{OpenEDR} y \textit{Elastic Search} a través de \textit{Elastic Defender}.
+
+\vspace{2em}
+
+%%%%% SUBSECTION D %%%%%
+\newsubsection{d) Red DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Red interna administrada por pfSense, la cual tendrá un sistema operativo \textit{Debian} con instalación de la extensión del honeypot \textit{T-POT}. La función de este es enviar los logs de eventos ocurrido al SIEM \textit{Elastic Search} presente en la nube de AWS, con la finalidad de tener control y monitoreo sobre las acciones realizadas en los diversos honeypots presentes en \textit{T-POT}.
+
+\vspace{2em}
+
+%%%%% SUBSECTION E %%%%%
+\newsubsection{e) Servicio Elastic en AWS Cloud}
+
+\vspace{1em}
+
+\hspace{20pt}
+Servicio establecido en AWS cloud, el cual cumple la función de SIEM en la presente infraestructura. Este tendrá acceso a los logs y a la información entregada por los diferentes dispositivos y servicios pertenecientes a las redes internas. La instalación de Elastic en AWS cloud suple la instalación prevista del ELK como stack en la red DMZ1.
+
+\vspace{2em}
+
+%%%%% SUBSECTION F %%%%%
+\newsubsection{f) VM Parrot OS}
+
+\vspace{1em}
+
+\hspace{20pt}
+Con la finalidad de realizar configuraciones en sistema pfSense, y llevar a cabo pruebas dentro de las diferentes redes, previo al montaje de los sistemas operativos \textit{Windows 10 - LAN}, \textit{Kali Linux - DMZ1} y \textit{Debian - DMZ2}, se utiliza máquina virtual con sistema operativo \textit{Parrot OS}, la cual será participe de la arquitectura durante los primeros instantes de vida del montaje.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 3 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{III.    Instalación máquinas virtuales}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para realizar el levantamiento de los sistemas operativos virtuales que serán parte del entorno se utiliza el software de virtualización \textit{Oracle VirtualBox}. Las configuraciones realizadas en cada máquina virtual se detallan a continuación.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Máquina virtual UTM - pfSense}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea una máquina virtual con sistema operativo de tipo \textit{BSD} en versión \textit{FreeBSD (64-bit)}, a la cual se le asigna como nombre \textit{UTM - pfSense}. Para bootear el disco de instalación se incorpora como imagen ISO el fichero \textit{pfSense-CE-2.7.0-RELEASE-amd64.iso}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/utm-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 2: Nombre y sistema operativo VM UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+En cuanto a las especificaciones de hardware, se le asignan 2 GB (2048 MB) de memoria RAM y 1 núcleo de procesador. Tomando en cuenta que las especificaciones del sistema operativo solicitan 1 GB de RAM o más y que se ejecuta desde consola ya que no posee interfaz gráfica propia, está asignación de componentes es suficiente para un correcto funcionamiento del sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/utm-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 3: Hardware VM UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, se le asigna un espacio en disco de 50 GB de forma dinámica, para no reservar por completo esta cantidad en disco y que el tamaño de la máquina virtual incremente a medida que sea necesario.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/utm-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 4: Disco duro VM UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Ya creada la máquina virtual, se definen las interfaces de red que serán necesarias para la configuración de la infraestructura. Para esto se habilitan los 4 adaptadores de red disponibles en la VM.
+
+\vspace{1em}
+
+\hspace{20pt}
+El adaptador 1 se configura en modo \textit{Adaptador puente}, con la finalidad de que funcione como red \textit{WAN} para pfSense en nuestra red local y se pueda obtener una dirección IP privada perteneciente a esta red a la vez que otorgue a la red interna conexión a internet.
+
+\vspace{1em}
+
+\hspace{20pt}
+El adaptador 2 se configura en modo \textit{Red interna}, la que por nombre toma \textit{LAN}. Esta será una de las redes internas administradas por pfSense, en la cual se conectará la máquina \textit{Windows 10 - LAN}.
+
+\vspace{1em}
+
+\hspace{20pt}
+El adaptador 3 de igual manera se configura en modo \textit{Red interna}, la que por nombre toma \textit{DMZ1}. Esta será otra de las redes internas administradas por pfSense, desde la cual se levantará la VM \textit{Kali Linux - DMZ1}, en la que se gestionará un servidor apache en conjunto con otras aplicaciones de control, monitoreo y registro de logs.
+
+\vspace{1em}
+
+\hspace{20pt}
+Por último el adaptador 4 se configura en modo \textit{Red interna}, la que por nombre toma \textit{DMZ2}. Esta es la tercera y última de las redes internas administradas por pfSense. En ella irá levantada una máquina con sistema Debian en la cual se encontrará el sistema de honeypots \textit{T-POT}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/utm-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 5: Configuración adaptadores de red UTM.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al ejecutar la máquina virtual por primera vez se debe realizar la instalación del sistema operativo en el espacio de disco asignado. Esta se realiza de forma convencional, siguiendo paso a paso el procedimiento de instalación y cerrando la máquina al finalizar. Posteriormente se elimina la imagen ISO de instalación desde las configuración de la VM en VirtualBox.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/utm-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 6: Lado izquierdo: imagen ISO antes. Lado derecho: eliminación imagen ISO. 
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras realizar estas configuraciones, la máquina UTM está lista para ser parametrizada desde un dispositivo conectado a través de su webserver.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Máquina virtual Windows 10 - LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea máquina virtual con sistema operativo de tipo \textit{Windows} en versión \textit{Windows 10 (64-bit)}, a la cual se le asigna como nombre \textit{Windows 10 - LAN}. Para bootear el disco de instalación se incorpora como imagen ISO el fichero \textit{Windows10-pro\_64bits.iso}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/win1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 7: Nombre y sistema operativo Windows 10 - LAN.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+En las especificaciones de hardware se asignan 4 GB (4096 MB) de memoria RAM y 2 núcleos de procesador.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/win1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 8: Hardware VM Windows 10- LAN.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+La asignación de espacio en disco es de 100 GB de forma dinámica, para que el tamaño de la máquina virtual aumente a medida que se vayan incorporando nuevos servicios a esta.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/win1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 9: Disco duro VM Windows 10 - LAN.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras instalar la máquina virtual se procede a cerrar para eliminar la imagen ISO de instalación desde las configuración de VirtualBox.
+
+\vspace{1em}
+
+\hspace{20pt}
+Ya creada e instalada la VM, se configura la interfaz de red de adaptador 1 como \textit{Red interna LAN}, con la finalidad de ser incorporada a dicha red interna tras la parametrización desde pfSense.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/win1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 10: Configuración adaptador de red VM Windows 10 - LAN.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Máquina virtual Kali Linux - DMZ1}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea una máquina virtual con sistema operativo de tipo \textit{Linux} en versión \textit{Debian (64-bit)}, a la cual se le asigna como nombre \textit{Kali Linux - DMZ1}. Para bootear el disco de instalación se incorpora como imagen ISO el fichero \textit{kali-linux-2023.3-installer-amd64.iso}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/kali1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 11: Nombre y sistema operativo VM Kali Linux - DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+En especificaciones de hardware, se asignan 4 GB (4096 MB) de memoria RAM y 2 núcleos de procesador. Las especificaciones del sistema operativo solicitan estos valores como recursos mínimos para la ejecución de Kali, pero recomiendan en el caso de ejecutar procesos mas intensos, aumentar la memoria RAM a 8 GB. En caso de ser necesario realizar el cambio de asignación en el hardware, se documentará respectivamente.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/kali1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 12: Hardware VM Kali Linux - DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se le asigna un espacio en disco de 80 GB de forma dinámica, para no reservar por completo esta cantidad en disco y que el tamaño de la máquina virtual incremente a medida que se vayan incorporando nuevos servicios.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/kali1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 13: Disco duro VM Kali Linux - DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al ejecutar la VM por primera vez se debe realizar la instalación del sistema operativo en el espacio de disco asignado. Esta se realiza siguiendo paso a paso el procedimiento detallado en la documentación de instalación del sistema Kali Linux. Tras finalizar la instalación se cierra la máquina virtual. Posteriormente se elimina la imagen ISO de instalación desde las configuraciones de esta en VirtualBox.
+
+\vspace{1em}
+
+\hspace{20pt}
+Ya creada e instalada la máquina virtual, se configura la interfaz de red de adaptador 1 como \textit{Red interna DMZ1}, con la finalidad de ser incorporada a dicha red interna tras la parametrización desde pfSense.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/kali1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 14: Configuración adaptador de red VM Kali Linux - DMZ1.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 4 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{4.  Máquina virtual Debian TPOT - DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea una máquina virtual con sistema operativo de tipo \textit{Linux} en versión \textit{Debian (64-bit)}, a la cual se le asigna como nombre \textit{Debian TPOT - DMZ2}. Para bootear el disco de instalación se incorpora como imagen ISO el fichero \textit{tpot\_amd64.iso}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/debian1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 15: Nombre y sistema operativo VM Debian TPOT - DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Las especificaciones de hardware asignadas se basan en la información obtenida desde el github de T-POT "\textit{https://github.com/telekom-security/tpotce}", quedando con 8 GB de memoria RAM y 4 núcleos de procesador para un funcionamiento estable en comienzo. Se indica que en caso de ser necesario, debido al constante procesamiento y ejecución de numerosos servicios, se incremente el tamaño de la memoria RAM asignada a 16 GB. Esto se documentará en su debido momento de llegar a ser necesario.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/debian1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 16: Hardware VM Debian TPOT - DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+La asignación de espacio en disco es de 128 GB de forma dinámica, para que el tamaño de la máquina virtual aumente a medida que se vayan incorporando nuevos logs de la actividad realizada sobre los honeypots.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/debian1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 17: Disco duro VM Debian TPOT - DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se realiza la instalación del sistema operativo enfatizando en la selección de isntalación de \textit{T-POT}. Luego se procede a cerrar la máquina virtual para eliminar la imagen ISO de instalación desde las configuración de la VM en VirtualBox.
+
+\vspace{1em}
+
+\hspace{20pt}
+Ya creada e instalada la máquina virtual, se configura la interfaz de red de adaptador 1 como \textit{Red interna DMZ2}, con la finalidad de ser incorporada a dicha red interna tras la parametrización desde pfSense.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/debian1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 18: Configuración adaptador de red VM Debian TPOT - DMZ2.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 5 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{5.  Disposición final de máquinas virtuales en VirtualBox}
+
+\vspace{1em}
+
+\hspace{20pt}
+Tras la creación de las máquinas virtuales, la instalación de los correspondientes sistemas operativos en cada una de estas y la configuración de las interfaces de red correspondientes para cada máquina, la disposición de VMs en VirtualBox queda de la siguiente forma:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/virtual1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 19: Disposición de máquinas virtuales en VirtualBox a utilizar para la infraaestructura creada.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 4 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{IV.  Configuración de sistema pfSense}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1. Login en VM UTM - pfSense}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para comenzar con la configuración de \textit{pfSense} se encienden dos máquinas virtuales: la VM UTM - pfSense y una VM Parrot OS, que es desde donde se realizará toda la configuración de pfSense.
+
+\vspace{1em}
+
+\hspace{20pt}
+Si al ingresar a la máquina UTM se solicita realizar un login, las credenciales son las por defecto del sistema:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item User: admin
+    \item Password: pfsense
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 20: Login en VM UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras realizar el login, la pantalla que se obtiene es la siguiente:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 21: Pantalla principal VM UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De esta última imagen se destaca la dirección IP LAN \textit{192.168.1.1} con máscara de subred \textit{255.255.255.0}, la cual será utilizada para realizar la conexión vía navegador a través de Parrot OS, para realizar la configuración del sistema mediante una interfaz gráfica. Luego de esto, podemos dejar dicha VM ejecutando en segundo plano para comenzar con la configuración.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2. Configuración pfSense por webserver}
+
+\vspace{2em}
+
+%%%%% SUBSECTION A %%%%%
+\newsubsection{a) Configuración inicial}
+
+\vspace{1em}
+
+\hspace{20pt}
+Estando en Parrot (el cual previamente debe estar configurado con adaptador de red en modo \textit{Red interna LAN}), se abre un navegador y se ingresa como dirección URL la IP 192.168.1.1. Por pantalla se presentará un mensaje de \textit{"Warning: Potential Security Risk Ahead"}. Para continuar basta con seleccionar la opción \textit{"Advanced..."} y luego \textit{"Accept the Risk and Continue"} para continuar a la página principal de login de pfSense.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 22: Mensaje de riesgo al realizar conexión con IP 192.168.1.1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Las credenciales de acceso por defecto son las mismas que para acceder a la VM UTM - pfSense:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item Username: admin
+    \item Password: pfsense
+\end{itemize}
+
+\vspace{1em}
+
+\hspace{20pt}
+Tras ingresar al servidor web de pfSense se presentará una pantalla de configuración inicial. Para esta asignamos la  siguiente configuración.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 23: Configuración de hostname, domain y servidores DNS.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 24: Configuración zona horaria.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 25: Configuración interfaz WAN.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 26: Configuración interfaz LAN.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 27: Cambio contraseña por defecto.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 28: Recarga final posterior a la configuración.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION B %%%%%
+\newsubsection{b) Cambio de dirección IP en Parrot}
+
+\vspace{1em}
+
+\hspace{20pt}
+Tras realizar esta configuración inicial, la dirección IP de pfSense habrá cambiado a 192.168.100.1, por lo que se perderá conexión con el servidor debido a que Parrot se encuentra en la red 192.168.1.0. Para esto, desde consola, desactivamos la interfaz utilizada para conexión a red llamada \textit{enp0s3} con la finalidad volver a activarla y que conecte con dirección IP perteneciente a la nueva red interna LAN 192.168.100.0. Esto se realiza con el siguiente comando:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 29: Desactivar tarjeta de red.
+\end{center}
+
+\vspace{2em}
+
+Pasados un par de segundos, se vuelve a activar la tarjeta de red:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-11.png}
+    
+\vspace{0.1em}
+    
+    Fig. 30: Activar tarjeta de red.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para corroborar el cambio en la dirección IP de la máquina Parrot, se visualizan los detalles mediante comando \textit{ifconfig} por consola. En la siguiente imagen se presenta una comparativa entre la dirección IP \textit{192.168.1.234} que la VM tenía antes de la configuración de pfSense y la nueva IP \textit{192.168.100.10}, asignada tras la habilitación de la tarjeta de red con la nueva configuración.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-12.png}
+    
+\vspace{0.1em}
+    
+    Fig. 31: Arriba, antigua dirección IP Parrot. Abajo, nueva dirección IP Parrot.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION C %%%%%
+\newsubsection{c) Configuración interfaces de red DMZ1 y DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego, desde navegador, dirigirse a la nueva dirección IP asignada a pfSense, la 192.168.100.1. Aparecerá la misma pantalla de login anterior, pero esta vez para loguear se debe utilizar como username \textit{admin} y como password la nueva contraseña ingresada durante la configuración inicial.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-13.png}
+    
+\vspace{0.1em}
+    
+    Fig. 32: Conexión a IP 192.168.100.1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al ingresar a la interfaz de pfSense, se aprecia que solo existen 2 interfaces creadas: la WAN y la LAN.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-14.png}
+    
+\vspace{0.1em}
+    
+    Fig. 33: Interfaces habilitadas.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Lo siguiente es crear las interfaces para las redes DMZ1 y DMZ2. Para esto, desde el menú superior se selecciona la ruta \textbf{\textit{Interfaces -> Assignments}}. En esta pantalla se agregan dos interfaces nuevas, las cuales por defecto tienen nombres \textit{OPT1 y OPT2}. Se declara para el resto de las configuraciones realizadas, que cada vez que se modifique o agregue algún parámetro en pfSense, se deben aplicar los cambios posterior al guardado de la configuración para que esta surja efecto.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-15.png}
+    
+\vspace{0.1em}
+    
+    Fig. 34: Interfaces nuevas creadas.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se ingresa a la interfaz \textit{OPT1} para habilitarla y realizar un par de configuraciones, las cuales son detalladas en al siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-16.png}
+    
+\vspace{0.1em}
+    
+    Fig. 35: Configuración interfaz DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se replica la misma configuración para la interfaz \textit{OPT2} con el fin de asignarla como DMZ2. La configuración a continuación:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-17.png}
+    
+\vspace{0.1em}
+    
+    Fig. 36: Configuración interfaz DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, la distribución de las redes internas en pfSense queda plasmada en la siguiente tabla:
+
+\vspace{2em}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+         \hline
+         \textbf{ Nombre de red } & \textbf{ Tipo de red } & \textbf{ IP Address / Subnet mask }\\
+         \hline
+         WAN & Local  & 192.168.1.0/24\\
+         \hline
+         LAN & Interna pfSense & 192.168.100.0/24\\
+         \hline
+         DMZ1 & Interna pfSense & 192.168.200.0/24\\
+         \hline
+         DMZ2 & Interna pfSense & 192.168.250.0/24\\
+         \hline
+    \end{tabular}
+    \caption{Lista de redes disponibles en pfSense.}
+    \label{tab:my_label}
+\end{table}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-18.png}
+    
+\vspace{0.1em}
+    
+    Fig. 37: Listado de interfaces final en pfSense.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-0.png}
+    
+\vspace{0.1em}
+    
+    Fig. 38: Listado final de redes desde máquina virtual UTM - pfSense.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION D %%%%%
+\newsubsection{d) Configuración servidor DNS}
+
+\vspace{1em}
+
+\hspace{20pt}
+El paso siguiente es habilitar a pfSense para que funcione como servidor de DNS. Para esto, seguir la ruta desde el menú superior: \textbf{\textit{Services -> DNS Resolver}}. Desde la interfaz de \textit{General Settings} se realiza la siguiente configuración.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-19.png}
+    
+\vspace{0.1em}
+    
+    Fig. 39: Configuración pfSense como servidor DNS.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION E %%%%%
+\newsubsection{e) Configuración servidor DHCP red LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Posterior a la configuración del servidor DNS, se comienza con la configuración de los servidores DHCP. Para el DHCP server de la red LAN, dirigirse a la ruta desde el menú superior \textbf{\textit{Services -> DHCP Server}}. En el apartado \textit{LAN} se realiza la configuración que se muestra en las siguientes imágenes:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-20.png}
+    
+\vspace{0.1em}
+    
+    Fig. 40: Configuración general y rango limitado de direcciones IP para servidor DHCP red LAN.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-21.png}
+    
+\vspace{0.1em}
+    
+    Fig. 41: Asignación de servidores DNS para servidor DHCP red LAN.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-22.png}
+    
+\vspace{0.1em}
+    
+    Fig. 42: Asignación de dirección de gateway para servidor DHCP red LAN.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION F %%%%%
+\newsubsection{f) Configuración servidor DHCP red DMZ1}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para configurar el DHCP server de la red DMZ1, dirigirse a la ruta desde el menú superior \textbf{\textit{Services -> DHCP Server}}. Desde el apartado de \textit{DMZ1}, se realiza la configuración que se muestra en las siguientes imágenes:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-23.png}
+    
+\vspace{0.1em}
+    
+    Fig. 43: Configuración general y rango limitado de direcciones IP para servidor DHCP red DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-24.png}
+    
+\vspace{0.1em}
+    
+    Fig. 44: Asignación de servidores DNS para servidor DHCP red DMZ1.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-25.png}
+    
+\vspace{0.1em}
+    
+    Fig. 45: Asignación de dirección de gateway para servidor DHCP red DMZ1.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION G %%%%%
+\newsubsection{g) Configuración servidor DHCP red DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Por último, para configurar el DHCP server de la red DMZ2, dirigirse a la ruta desde el menú superior \textbf{\textit{Services -> DHCP Server}}. Desde el apartado de \textit{DMZ2}, se realiza la configuración que se muestra en las siguientes imágenes:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-26.png}
+    
+\vspace{0.1em}
+    
+    Fig. 46: Configuración general y rango limitado de direcciones IP para servidor DHCP red DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-27.png}
+    
+\vspace{0.1em}
+    
+    Fig. 47: Asignación de servidores DNS para servidor DHCP red DMZ2.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-28.png}
+    
+\vspace{0.1em}
+    
+    Fig. 48: Asignación de dirección de gateway para servidor DHCP red DMZ2.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION H %%%%%
+\newsubsection{h) Filtrado por MAC en red LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza filtrado por dirección MAC para VM \textit{Windows 10 - LAN} desde la ruta \textbf{\textit{Services -> DHCP Server}}, apartado \textit{LAN}, opción \textit{DHCP Static Mapping for this Interface}. Al dispositivo se le asigna la dirección IP \textit{192.168.100.200}. La configuración se muestra en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/MAC1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 49: Configuración de filtro por MAC asignado a VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION I %%%%%
+\newsubsection{i) Filtrado por MAC en red DMZ1}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza filtrado por dirección MAC para VM \textit{Kali Linux - DMZ1} desde la ruta \textbf{\textit{Services -> DHCP Server}}, apartado \textit{DMZ1}, opción \textit{DHCP Static Mapping for this Interface}. Al dispositivo se le asigna la dirección IP \textit{192.168.200.200}. La configuración se muestra en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/MAC1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 50: Configuración de filtro por MAC asignado a VM \textit{Kali Linux - DMZ1}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION J %%%%%
+\newsubsection{j) Filtrado por MAC en red DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza filtrado por dirección MAC para VM \textit{Debian TPOT - DMZ2} desde la ruta \textbf{\textit{Services -> DHCP Server}}, apartado \textit{DMZ2}, opción \textit{DHCP Static Mapping for this Interface}. Al dispositivo se le asigna la dirección IP \textit{192.168.250.200}. La configuración se muestra en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/MAC1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 51: Configuración de filtro por MAC asignado a VM \textit{Debian TPOT - DMZ2}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION K %%%%%
+\newsubsection{k) Configuración reglas de Firewall para red LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar la configuración de las reglas de firewall, para todas las redes creadas anteriormente, se debe navegar a la ruta del menú superior \textbf{\textit{Firewall -> Rules}}. Desde el apartado de \textit{LAN} se observa que las reglas vienen asignadas por defecto. Además se declara una nueva regla para acceder al servidor apache de la red \textit{DMZ1}, y un conjunto de reglas para acceder a los servicios establecidos en el honeypot \textit{T-POT} de la red \textit{DMZ2}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-29.png}
+    
+\vspace{0.1em}
+    
+    Fig. 52: Reglas de firewall asignadas para red LAN.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION L %%%%%
+\newsubsection{l) Configuración reglas de Firewall para red DMZ1}
+
+\vspace{1em}
+
+\hspace{20pt}
+Ahora, para configuración de las reglas de firewall de la red \textit{DMZ1}, se navega a la ruta del menú superior \textbf{\textit{Firewall -> Rules}}, apartado \textit{DMZ1}. Para esta red se definen 4 reglas especificas:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textbf{\textit{Primera regla:}} permitir el tráfico entrante y saliente a través del puerto 8888, debido a que bajo este puerto estará corriendo el servidor Apache.
+    \item \textbf{\textit{Segunda regla:}} permitir el tráfico para el protocolo \textit{DNS} entrante y saliente a través del puerto 53.
+    \item \textbf{\textit{Tercera regla:}} permitir el tráfico \textit{https} entrante y saliente a través del puerto 443.
+    \item \textbf{\textit{Cuarta regla:}} permitir el tráfico \textit{http} entrante y saliente a través del puerto 80.
+    \item \textbf{\textit{Quinta regla:}} permitir el tráfico desde la red DMZ1 hacia cualquier sitio para el protocolo \textit{ICMP}.
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-30.png}
+    
+\vspace{0.1em}
+    
+    Fig. 53: Reglas de firewall configuradas para red DMZ1.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION M %%%%%
+\newsubsection{m) Configuración reglas de Firewall para red DMZ2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Debido a las especificaciones planteadas en el github oficial del honeypot \textit{T-POT}, los puertos a tratar para una correcta intervención sobre el honeypot son los siguientes: 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/dmz2-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 54: Tabla de puertos para T-POT según github.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Conociendo ya los puertos a utilizar se navega a la ruta del menú superior \textbf{\textit{Firewall -> Aliases}} apartado \textit{Ports}, con el fin de crear dos alias: uno para agrupar los puertos de entrada TCP y otro para agrupar los puertos de entrada UDP, tal como se aprecia en la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/dmz2-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 55: Alias creados para puertos de entradas TCP y UDP.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente se navega a la ruta del menú superior \textbf{\textit{Firewall -> Rules}} apartado \textit{DMZ2} para crear las reglas de firewall correspondientes. Se crean 6 reglas específicas:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textbf{\textit{Primera regla:}} permitir el tráfico \textit{https} entrante y saliente a través del puerto 443.
+    \item \textbf{\textit{Segunda regla:}} permitir el tráfico \textit{http} entrante y saliente a través del puerto 80.
+    \item \textbf{\textit{Tercera regla:}} permitir el tráfico para el alias \textit{TPOTudp}, que contiene todos los puertos UDP entrantes solicitados por la tabla del github para el funcionamiento del \textit{T-POT}.
+    \item \textbf{\textit{Cuarta regla:}} permitir el tráfico para el alias \textit{TPOTtcp}, que contiene todos los puertos TCP entrantes solicitados por la tabla del github para el funcionamiento del \textit{T-POT}, a excepción de los puertos 80 y 443.
+    \item \textbf{\textit{Quinta regla:}} bloquear el tráfico desde la red DMZ2 hacia la red LAN.
+    \item \textbf{\textit{Sexta regla:}} bloquear el tráfico desde la red DMZ2 hacia la red DMZ1.
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/CH4-31.png}
+    
+\vspace{0.1em}
+    
+    Fig. 56: Reglas de firewall configuradas para red DMZ2.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION M %%%%%
+\newsubsection{m) Configuración NAT para portforwarding}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se implementan reglas para realizar NAT con pfSense hacia los distintos servicios impartidos por las redes internas (servidor apache en red \textit{DMZ1} y T-POT en red \textit{DMZ2}). Se crean 5 reglas específicas las cuales se detallan a continuación:
+
+\vspace{1em}
+
+\begin{itemize}
+    \item \textbf{\textit{Primera regla:}} redireccionar el tráfico proveniente de los puertos UDP detallados en el alias \textit{TPOTudp} desde la red WAN hacia la IP \textit{192.168.250.200}, con su respectivo puerto perteneciente al mismo alias anterior.
+    \item \textbf{\textit{Segunda regla:}} redireccionar el tráfico proveniente de los puertos TCP detallados en el alias \textit{TPOTtcp} desde la red WAN hacia la IP \textit{192.168.250.200}, con su respectivo puerto perteneciente al mismo alias anterior.
+    \item \textbf{\textit{Tercera regla:}} redireccionar el tráfico proveniente del puerto 443 desde la red WAN hacia la IP \textit{192.168.250.200} por el mismo puerto.
+    \item \textbf{\textit{Cuarta regla:}} redireccionar el tráfico proveniente del puerto 80 desde la red WAN hacia la IP \textit{192.168.250.200} por el mismo puerto.
+    \item \textbf{\textit{Quinta regla:}} redireccionar el tráfico proveniente del puerto 8888 desde la red WAN hacia la IP \textit{192.168.200.200} por el mismo puerto.
+\end{itemize}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/pf1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 57: Reglas de portforwarding desde WAN hacia redes internas.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Configuración de OpenVPN en pfSense}
+
+\vspace{2em}
+
+%%%%% SUBSECTION A %%%%%
+\newsubsection{a) Instalación de paquete \textit{openvpn}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Primero que todo, para realizar la configuración de la conexión VPN a pfSense, se debe descargar el paquete \textit{openvpn-client-export}. Para esto, se navega a la ruta del menú superior \textbf{\textit{System -> Package Manager}}, en el apartado \textit{Available Packages}. Desde aquí se instala el paquete nombrado anteriormente. Tras realizar esto, cambiar al apartado \textit{Installed Packages} para corroborar la instalación.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 58: Instalación paquete openvpn-client-export.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION B %%%%%
+\newsubsection{b) Creación de entidad certificadora}
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego, para validar y gestionar la emisión de certificados habilitados para la conexión remota a la red, se crea una entidad certificadora desde pfSense. Se navega a la ruta \textbf{\textit{System -> Certificates}}, desde el apartado \textit{Authorities}, en donde se crea una autoridad certificadora llamada \textit{Keepcoding}.
+
+\newpage
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 59: Configuración entidad certificadora Keepcoding.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 60: Entidad certificadora Keepcoding.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION C %%%%%
+\newsubsection{c) Creación de certificado principal para conexiones vpn}
+
+\vspace{1em}
+
+\hspace{20pt}
+Desde la ruta \textbf{\textit{System -> Certificates}}, apartado \textit{Certificates}, se realiza la creación de un certificado de tipo Servidor, con el fin de permitir conexiones remotas a través de conexión vpn. 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 61: Entidad certificadora Keepcoding.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 62: Entidad certificadora Keepcoding.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION D %%%%%
+\newsubsection{d) Creación de servidor vpn}
+
+\vspace{1em}
+
+\hspace{20pt}
+En la ruta \textbf{\textit{VPN -> OpenVPN}}, apartado \textit{Servers}, se realiza la creación de un servidor para conexiones remotas por vpn. Se le asigna el modo de acceso remoto \textit{Remote Access (SSL/TLS+User Auth)}, dirección de red asignada para la conexión por vpn en la \textit{192.168.220.0}, con máscara de subred \textit{255.255.255.0}, y comunicación a través del puerto \textit{4194}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 63: Servidor para conexión a la red a través de vpn.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 64: Entidad certificadora Keepcoding.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION E %%%%%
+\newsubsection{e) Creación de usuario para conexiones vpn}
+
+\vspace{1em}
+
+\hspace{20pt}
+En la ruta \textbf{\textit{System -> User manager}}, apartado \textit{Users}, se realiza la creación de un usuario de nombre \textit{User}, con el cual conectarnos al servidor vpn a través de una máquina virtual con Windows 10 (VM \textit{Windows 10 - LAN}). En la creación del usuario, a este se le habilita la opción \textit{Create a user certificate}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 65: Creación de usuario \textit{User}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION F %%%%%
+\newsubsection{f) Certificado de conexión vpn para usuario \textit{User}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se realiza la descarga del certificado emitido para el usuario \textit{User}, con la finalidad de lograr la conexión vpn vía remota a través de este usuario. Para esto, desde la ruta \textbf{\textit{VPN -> OpenVPN}}, apartado \textit{Client Export}, desde \textit{OpenVPN Clients} en la opción \textit{Most Clients}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 66: Descarga certificado vpn usuario \textit{User}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION G %%%%%
+\newsubsection{g) Habilitación de regla en firewall para conexión por vpn}
+
+\hspace{20pt}
+Finalmente, para habilitar la comunicación a través de conexión VPN, se debe crear una regla en el firewall de pfSense que permita el tráfico a través del puerto designado para la vpn, que en este caso es el puerto \textit{4194}. Para esto es necesario dirigirse a la ruta \textbf{\textit{Firewall -> Rules}}, apartado \textit{WAN}, y se agrega la nueva regla arriba del todo.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 67: Regla en firewall para conexión vpn por puerto 4194.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Además, en el apartado \textit{OpenVPN} se debe agregar la regla que permita el paso de todo tipo de tráfico en la red interna a través de la conexión vpn. Para esto se agrega al siguiente regla:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 68: Regla en firewall para habilitar tráfico en conexión vpn.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION H %%%%%
+\newsubsection{h) Pruebas de conexión vpn desde VM Windows 10 - LAN}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para probar la funcionalidad del servidor vpn se utiliza la máquina virtual \textit{Windows 10 - LAN}. Desde esta se descarga la aplicación \textit{OpenVPN Connect V3 for Windows}. Se realiza una instalación convencional de este software.
+
+\vspace{1em}
+
+\hspace{20pt}
+Lo siguiente es realizar la conexión a través de \textit{OpenVPN} en \textit{Windows}, porque lo que para esto se necesita el certificado perteneciente al usuario \textit{User} creado anteriormente en pfSense, para lograr conectarse por VPN a la red interna desde la WAN (mas adelante se detalla el proceso de realizar el cambio de adaptador de red en VirtualBox para la máquina \textit{Windows 10 - LAN} desde \textit{Red interna LAN} a \textit{Adaptador puente}). Dicho certificado ha quedado descargado en la máquina virtual de \textit{Parrot OS}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar la transferencia del certificado desde \textit{Parrot} hacia \textit{Windows}, se levanta un servidor local en Python3 en la VM \textit{Parrot OS}, desde el directorio que contiene el fichero descargado anteriormente desde pfSense:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-11.png}
+    
+\vspace{0.1em}
+    
+    Fig. 69: Directorio \textit{Desktop} en ruta \textit{/root/Desktop}, con fichero \textit{UTM-TCP4-4194-User-config.ovpn}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se corrobora la dirección IP de la VM \textit{Parrot OS} a través de un arreglo en bash para el comando \textit{ifconfig}:
+
+\newpage
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-12.png}
+    
+\vspace{0.1em}
+    
+    Fig. 70: IP de máquina \textit{Parrot OS} con dirección \textit{192.168.100.100}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Ahora, se levanta el servidor local en Python3 desde el directorio actual por el puerto 8888:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-13.png}
+    
+\vspace{0.1em}
+    
+    Fig. 71: Servidor local de Python3 en puerto 8888.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Ahora es momento de dirigirse a la máquina \textit{Windows 10 - LAN}. Desde el navegador se ingresa la dirección IP de la VM \textit{Parrot OS}, designando como puerto el \textit{8888}. Aquí, se descarga el fichero \textit{UTM-TCP4-4194-User-config.ovpn}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-14.png}
+    
+\vspace{0.1em}
+    
+    Fig. 72: Servidor local en VM \textit{Parrot OS} desde VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Habiendo descargado el fichero, se puede detener el servidor Python3 desde la máquina \textit{Parrot OS}.
+
+\vspace{1em}
+
+\hspace{20pt}
+En estos momentos en la máquina virtual \textit{Windows 10 - LAN} existen tanto el certificado de conexión vpn para el usuario \textit{User} (recién descargado), como el software \textit{OpenVPN} instalado. Lo siguiente es cambiar el adaptador de red en las configuraciones de VirtualBox para esta máquina desde \textit{Red interna LAN} a \textit{Adaptador puente}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-15.png}
+    
+\vspace{0.1em}
+    
+    Fig. 73: Cambio adaptador de red en VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se corrobora el cambio de dirección IP desde CMD a través de comando \textit{ipconfig}, el cual emite que la máquina posee una dirección IP perteneciente a la red local y no a \textit{Red interna LAN}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-16.png}
+    
+\vspace{0.1em}
+    
+    Fig. 74: Nueva IP de VM \textit{Windows 10 - LAN} tras cambio adaptador de red.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se ingresa a la aplicación \textit{OpenVPN}, y desde el apartador \textbf{\textit{Import Profile -> Upload File}} se incorpora el fichero descargado \textit{UTM-TCP4-4194-User-config.ovpn}, al cual se le asignan como nombre de usuario y como contraseña los definidos para el usuario \textit{User} en pfSense.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=8cm]{img/vpn1-17.png}
+    
+\vspace{0.1em}
+    
+    Fig. 75: Importación de fichero \textit{UTM-TCP4-4194-User-config.ovpn} e ingreso de credenciales \textit{Username} y \textit{Password}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras realizar la conexión, se confirma el funcionamiento del servidor vpn levantado en pfSense. En la siguiente imagen se aprecian tanto la interfaz conectada de \textit{OpenVPN} como el CMD con comando \textit{ipconfig} en ejecución, donde se aprecia la IP de red local como \textit{192.168.1.109} y la IP asignada a la red VPN como \textit{192.168.220.2}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-18.png}
+    
+\vspace{0.1em}
+    
+    Fig. 76: A la izquierda: interfaz \textit{OpenVPN} conectada. A la derecha, CMD con direcciones IP de VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Finalmente, se devuelve el estado del adaptador de red de esta VM a su estado normal, en la \textit{Red interna LAN}, con el fin de que este disponible para futuras configuraciones en la infraestructura. 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/vpn1-19.png}
+    
+\vspace{0.1em}
+    
+    Fig. 77: Adaptador de red en VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER V %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{V.  Configuración OpenEDR}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Creación de cuenta en OpenEDR}
+
+\vspace{1em}
+
+\hspace{20pt}
+Toda la configuración a nivel de servidor web de OpenEDR se realiza desde el navegador de la VM \textit{Kali Linux - DMZ1}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Para comenzar, se debe crear una cuenta en el siguiente link: \textit{https://openedr.platform.xcitium.com/register/?af=7639}. Al crear la cuenta se asigna \textit{Javier} como nombre de usuario. Posterior a realizar el primer login, se dispondrá por pantalla en el pop-up de inicio un link, el cual será utilizado para agregar la máquina virtual \textit{Windows 10 - LAN} al EDR como cliente.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 78: Link con token para instalación de OpenEDR en VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras realizar la primera intervención de 3 pasos vista en la imagen anterior, tendremos lista la interfaz de \textit{OpenEDR} para comenzar con las configuraciones del sistema. Pero antes, se debe instalar el endpoint en un equipo cliente para monitorear. En este caso será la máquina virtual \textit{Windows 10 - LAN}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 79: Interfaz principal de \textit{OpenEDR}.
+\end{center}
+
+\vspace{2em}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Instalación de OpenEDR cliente en VM \textit{Windows 10 - LAN}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Desde la máquina virtual \textit{Windows 10 - LAN} se realiza instalación como cliente de OpenEDR. Esto con el fin de monitorear el estado de este dispositivo desde el sistema creado anteriormente en la página web de OpenEDR desde \textit{Kali Linux - DMZ1}. Para esto, se ingresa en el navegador el link destacado en la sección anterior. Este nos enviará al siguiente sitio web:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 80: Descarga de \textit{EndPoint Communication Client Manager}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Posterior a la descarga del instalador \textit{EndPoint Communication Client Manager}, se procede a realizar una instalación convencional de este. Finalizada esta, se presentará en pantalla una notificación confirmando la correcta instalación del \textit{EndPoint Communication Client Manager}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 81: Instalación exitosa de \textit{EndPoint Communication Client Manager} en VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Configuración dispositivo cliente en OpenEDR}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para realizar la configuración del \textit{EndPoint Communication Client Manager} instalado en la máquina \textit{Windows 10 - LAN}, se navega a la ruta de la interfaz web de OpenEDR \textbf{\textit{Assets -> Devices}}, en el apartado \textit{Device List}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 82: Dispositivo cliente \textit{Windows-10-PRO} disponible para gestión en OpenEDR.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+El dispositivo \textit{Windows-10-PRO} que se aprecia en la imagen anterior es el nombre asignado para el cliente instalado en la VM \textit{Windows 10 - LAN}. Este dispositivo cliente solo tiene instalado el componente \textit{Agent}. Lo siguiente es instalar una serie de paquete que permitan administrar el \textit{Client Security} y el \textit{EDR} para este desde OpenEDR. Para esto se accede al dispositivo, desde donde se puede tener interacción con un variado menú de opciones.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 83: Opciones del dispositivo \textit{Windows-10-PRO}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se ingresa al menú \textit{Install or Manage Packages} y se selecciona la opción \textit{Install Additional Xcitium Packages}. En pantalla se presenta un menú en donde se seleccionarán las opciones de instalación en el dispositivo cliente, que en este caso serán \textit{Xcitium Client-Security} y \textit{Xcitium Client-EDR}. Además se programa un reinicio del dispositivo cliente \textit{Windows-10-PRO} tras finalizar la instalación de los estos paquetes. Asignado lo anterior, se procede con la instalación.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 84: Instalación de paquetes en dispositivo \textit{Windows-10-PRO}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego de unos minutos, en la máquina virtual \textit{Windows 10 - LAN} se presentará el siguiente pop-up de sistema en pantalla:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 85: Mensaje de reinicio de sistema tras instalación de paquetes.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+En este momento es necesario reiniciar dicha VM para que se apliquen los cambios y se finalice de forma correcta la instalación de los paquetes de OpenEDR.
+
+\vspace{1em}
+
+\hspace{20pt}
+Posterior al reinicio de la VM, desde la interfaz de OpenEDR se aprecia la instalación de los paquetes seleccionados, quedando disponibles ahora los componentes \textit{Agent}, \textit{Antivirus}, \textit{Firewall} y \textit{EDR}. 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 86: Lista de componentes activos en dispositivo \textit{Windows-10-PRO}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Como se aprecia en la imagen anterior, el sistema cliente posee un parche disponible para instalar. Tras revisar el parche se ve que corresponde a una actualización de \textit{Microsoft .NET Framework 4.8.1 for Windows 10 Version 22H2 for x64 (KB5011048)}. Se realiza la instalación de este parche.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/edr1-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 87: Lista de parches de seguridad disponibles en dispositivo \textit{Windows-10-PRO}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras la instalación del parche, la VM \textit{Windows 10 - LAN} está lista para ser gestionada y monitorizada por el sistema \textit{OpenEDR}, con la finalidad de conocer en tiempo real el estado en el que se encuentra dicho sistema.
+
+\vspace{1em}
+
+\hspace{20pt}
+Debido a la presencia final del SIEM \textit{Elastic ELK} en la arquitectura de red, solo se detalla el proceso de instalación de \textit{OpenEDR} y la incorporación de dispositivos como clientes a este, pero se aclara que este no será utilizado en la infraestructura final. De todas formas, se deja respaldo de un procedimiento básico sobre como trabajar con \textit{OpenEDR}.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 6 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{VI.  Instalación y configuración de Wazuh}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Instalación de Wazuh}
+
+\vspace{1em}
+
+\hspace{20pt}
+La instalación de \textit{Wazuh} se realiza en la VM \textit{Kali Linux - DMZ1}. Para comenzar con esta, se ejecuta el siguiente comando desde terminal:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 88: Comando de instalación de Wazuh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras ejecutarse la instalación desde el fichero recientemente descargado \textit{wazuh-install.sh}, en el output de consola se obtienen las credenciales de acceso al servidor de \textit{Wazuh}. Dichas credenciales son guardadas en un fichero llamado \textit{wazuh.txt}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 89: Credenciales de acceso a servidor Wazuh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Ya con las credenciales, se accede al servidor web de \textit{Wazuh} a través de la url en navegador \textit{http://127.0.0.1/app/wazuh}. Luego aparecerá la página principal de \textit{Wazuh}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 90: Página de login web server Wazuh.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 91: Página principal de Wazuh.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Configuración de un agente en Wazuh}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se ejecuta la configuración de un nuevo agente para Wazuh. Para esto se utiliza la VM \textit{Windows 10 - LAN}. Estando ya en el web server de \textit{Wazuh}, desde el menú \textit{Agent}, se selecciona la opción \textit{Deploy new agent}. En esta opción se realiza la siguiente selección de opciones con el fin de comenzar a gestionar la instalación de un nuevo agente en la VM \textit{Windows 10 - LAN} a través de un script entregado por pantalla:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 92: Configuración script de instalación para VM \textit{Windows 10 - LAN} como agente de Wazuh server.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Ahora, el comando que aparece al final de la imagen anterior, se ejecuta desde una terminal PowerShell en la VM \textit{Windows 10 - LAN}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/wazuh1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 93: Ejecución en PowerShell de script de instalación Wazuh agent.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego de ejecutar la instalación vía PowerShell, se ejecuta el siguiente comando para iniciar la instancia de Wazuh como agente.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/wazuh1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 94: Arranque de servicio \textit{Wazuh Agent} desde \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tal como indica el output de terminal, el servicio de Wazuh se ha iniciado correctamente en VM \textit{Windows 10 - LAN}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Al volver al webserver de Wazuh en la VM \textit{Kali Linux - DMZ1}, en el menú \textit{Agents}, se ve que se ha agregado como nuevo agente la VM \textit{Windows 10 - LAN} bajo el nombre \textit{Windows\_10\_LAN}. Con esto ya se tendría disponible la VM \textit{Windows 10 - LAN} para gestionarla y monitorizarla a través de Wazuh. server.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/wazuh1-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 95: Actualización de lista de agentes en webserver Wazuh.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Al igual que con \textit{OpenEDR}, solo se detalla el proceso de instalación de \textit{Wazuh} y la incorporación de un agentes a este, pero se deckara que no será utilizado en la infraestructura final. Se deja respaldo de un procedimiento básico para trabajar con \textit{Wazuh}.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 7 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{VII.  Instalación y configuración de Network IDS Suricata}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Instalación de Suricata}
+
+\vspace{1em}
+
+\hspace{20pt}
+La instalación de \textit{Suricata} se realiza en la VM \textit{Kali Linux - DMZ1}. Para comenzar con esta, se ejecuta el siguiente comando desde terminal:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 96: Comando de instalación de suricata.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Modificación de ruta en fichero suricata.yaml}
+
+\vspace{1em}
+
+\hspace{20pt}
+Antes de activar Suricata es necesario realizar un par de modificación en la configuración base de esta aplicación. Primero, se modifica la ruta absoluta de referencia al hospedaje de las reglas en el fichero \textit{suricata.yaml}. Para esto es necesario dirigirse a la ruta \textit{/etc/suricata/}. Estando ya en la ruta, se abre con el editor de texto de terminal \textit{nano} el fichero nombrado anteriormente. En este, se modifica la línea de código 2144, la cual contiene la variable \textit{default-rule-path}, en donde se cambia su valor de \textit{/var/suricata/rules} por \textit{/etc/suricata/rules}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 97: Arriba, ruta absoluta antigua de directorio reglas en suricata. Abajo, ruta absoluta modificada.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Asignación de reglas en Suricata}
+
+\vspace{1em}
+
+\hspace{20pt}
+En caso de querer revisar las reglas impartidas por la comunidad, se puede utilizar el comando:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 98: Visualización lista de reglas de Suricata IDS.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, se agrega una regla de tráfico general en el fichero \textit{suricata.rules}, el cual se encuentra en la ruta absoluta \textit{/etc/suricata/rules}. Aquí se incorpora una regla que detecte todo tipo de tráfico que pase por suricata.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 99: Regla general que permite tráfico entrante y saliente, desde y hacia cualquier puerto a través de Suricata NIDS.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 4 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{4.  Ejecución de IDS Suricata}
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente, para ejecutar Suricata desde la VM \textit{Kali Linux - DMZ1} basta con ejecutar el siguiente comando, al cual se le incorporan como argumentos la ruta del archivo \textit{suricata.yaml} y la interfaz de red utilizada \textit{eth0}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 100: Ejecución de Suricata por terminal.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Por otro lado, para mantener el input de consola libre para ejecutar comandos, y ocultar el output tras la ejecución de \textit{suricata}, se recomienda redirigir cualquier tipo de output al \textit{/dev/null} y forzando una ejecución en segundo plano. Esto se realiza con el siguiente comando:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 101: Ejecución en ejecución de \textit{Suricata}, con liberación del input y redirección de output al /dev/null.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Cabe destacar que el control de la ejecución o detención de \textit{Suricata} como servicio se puede realizar a través del número de ID entregado tras la ejecución del servicio, el cual es \textit{20639}. Si mediante comando \textit{ps -aux} se filtra el output de este con \textit{grep} asignando el número de id, se puede tener control sobre el servicio \textit{Suricata} a nivel de sistema. 
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 102: Suricata como servicio de sistema. El forzado de cierre del servicio se podría ejecutar a través de \textit{kill 20639}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Para dejar ejecutando en tiempo real los logs que se generar en \textit{Suricata} al recibir tráfico, se puede ejecutar el siguiente comando sobre el fichero \textit{fast.log}, que se enceuntra en al ruta absoluta \textit{/var/log/suricata}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/sur1-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 103: Ejecución en tiempo real de logs para Suricata desde fichero fast.log.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Con esta configuración base, Suricata se encuentra lista para funcionar. Se destaca que esta será incorporada en la arquitectura final para realizar la lectura de los logs generados por la máquina virtual \textit{Kali Linux - DMZ1}.
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 8 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{VIII.  Habilitación y levantamiento de servidor web Apache}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Habilitación de servicio apache2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Desde VM \textit{Kali Linux - DMZ1} se habilita el servicio \textit{apache2} desde consola con el siguiente comando: de \textit{Suricata} se realiza en la VM \textit{Kali Linux - DMZ1}. Para comenzar con esta, se ejecuta el siguiente comando desde terminal:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 104: Comando de habilitación servicio apache2.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Puesta en marcha de servicio apache2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego de habilitar el servicio \textit{apache2} se pone en marcha con el comando de la siguiente imagen:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 105: Comando de arranque servicio apache2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras poner en marcha el servicio \textit{apache2} se corrobora el status de este mediante terminal:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 106: Comando de status para servicio apache2.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Modificación puerto de escucha servicio apache2}
+
+\vspace{1em}
+
+\hspace{20pt}
+Posteriormente, se modifica el fichero \textit{ports.conf} ubicado en la ruta /etc/apache2/, para cambiar el puerto de escucha por defecto del servicio \textit{apache2} establecido en el 80 para conexiones vía http al 8888.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 107: Puerto de escucha por defecto del servicio apache2.
+\end{center}
+
+\newpage
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 108: Puerto de escucha establecido en 8888 para servicio apache2.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 4 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{4.  Visualización por navegador de servidor web apache}
+
+\vspace{1em}
+
+\hspace{20pt}
+Finalmente se confirma la ejecución del servicio apache2 mediante la visualización por navegador de la url \textit{127.0.0.1:8888}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/apache1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 109: Servidor web ejecutado por servicio apache2.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 9 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{IX.  Instalación y configuración de servicio Elastic Search}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Creación de cuenta en servicio Elastic Search}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se crea cuenta para servicio \textit{Elastic} desde sitio web \textit{https://www.elastic.co/es/}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/elas1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 110: Comando de habilitación servicio apache2.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se destaca que toda la configuración es realizada desde la VM \textit{WIndows 10 - LAN}, debido a que este dispositivo es el encargado de gestionar el SIEM a través de \textit{Kibana}.
+
+\vspace{1em}
+
+\hspace{20pt}
+Luego se definen algunas configuraciones para definir el alojamiento de Elastic en la nube. Debido a mi ubicación geográfica (Chile), se determina la región de \textit{SaoPaulo} para el uso de dicho servidor, además de la selección de AWS como proveedor del servicio de nube.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/elas1-2.png}
+    
+\vspace{0.1em}
+    
+    Fig. 111: Configuración principal para instancia de Elastic en cloud de AWS.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras la configuración inicial, la cuenta de \textit{Elastic} estará lista para su uso en su versión \textit{Free Trial}. Se nos entrega por pantalla las credenciales de uso para acceder a la cuenta. Luego de ingresar aparecerá el menú principal de \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 112: Menú principal de Elastic.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Configuración del SIEM a través de Elastic Defender}
+
+\vspace{1em}
+
+\hspace{20pt}
+En el menú principal se selecciona la opción \textit{Detect threats in my data with SIEM}. En esta opción se selección \textit{Add data with Elastic Defender}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/elas1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 113: Agregar Elastic Defender a instancia de Elastic.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+De la lista planteada en el menú \textit{Integrations} se selecciona \textit{Elastic Defender}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 114: Lista de apis para integrar a instancia Elastic.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego se selecciona la opción \textit{Add Elastic Defender} para agregar este a \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 115: Incorporación de Elastic Defender en Elastic.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras esto la api de \textit{Elastic Defender} se encuentra incorporada en el SIEM de \textit{Elastic}. Lo siguiente sería comenzar a agregar agentes para monitorizar y reglas que gestionen la información recepcionada de los agentes.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Incorporación de Elastic Agent}
+
+\vspace{1em}
+
+%%%%% SUBSECTION A %%%%%
+\newsubsection{a) Incorporación de VM \textit{Windows 10 - LAN} como agente de \textit{Elastic Defender}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Se procede a agregar como agente de \textit{Elastic} la máquina virtual \textit{Windows 10 - LAN}. Para esto se copia el script que aparece en pantalla luego de agregar \textit{Elastic Defender}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 116: Agregar Elastic Defender a instancia de Elastic.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Luego, desde una PowerShell abierta como administrador se ejecuta el script creado por \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 117: Script para instalación de agente en Windows.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+ Si la instalación de \textit{Elastic-Agent} se realiza de forma correcta, se recibirá en el output de consola el mensaje \textit{Elastic Agent has been successfully installed}, tal como el que se aprecia en imagen anterior.
+
+\vspace{1em}
+
+\hspace{20pt}
+A su vez en la interfaz de \textit{Elastic} se recibe el mensaje que un agente nuevo a sido incorporado correctamente al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 118: Mensaje de incorporación de un nuevo agente.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras esto se selecciona \textit{Add the integration} para integrar la VM \textit{Windows 10 - LAN} al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-11.png}
+    
+\vspace{0.1em}
+    
+    Fig. 119: Confirmación a la incorporación de nuevo agente.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-39.png}
+    
+\vspace{0.1em}
+    
+    Fig. 120: Estadisticas de agente conectado a \textit{Elastic} para VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION B %%%%%
+\newsubsection{b) Incorporación de VM \textit{Kali Linux - DMZ1} como agente de \textit{Elastic Defender}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para agregar la VM \textit{Kali Linux - DMZ1} como agente de \textit{Elastic} se dirige al menú izquierdo de \textit{Elastic}, en la ruta \textbf{\textit{Management -> Fleet}}. Desde esta pantalla se selecciona \textit{Add agent}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-24.png}
+    
+\vspace{0.1em}
+    
+    Fig. 121: Agregar nuevo agente a Elastic.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se selecciona la opción de \textit{Linux Tar} en el apartado \textit{Install Elastic Agent on your host}. Se presentará un script con el que realizar la instalación de un agente en sistemas operativos Linux bajo descompresión de ficheros \textit{tar.gz}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-25.png}
+    
+\vspace{0.1em}
+    
+    Fig. 122: Script para instalación de agente en Linux.
+\end{center}
+
+\vspace{2em}
+
+
+\hspace{20pt}
+Luego, desde una terminal en la máquina \textit{Kali Linux - DMZ1} se ejecuta el script creado anteriormente por \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-26.png}
+    
+\vspace{0.1em}
+    
+    Fig. 123: Ejecución desde terminal de instalación de Elastic-Agent.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+ Si la instalación de \textit{Elastic-Agent} se realiza de forma correcta, se recibirá en el output de consola el mensaje \textit{Elastic Agent has been successfully installed}, tal como el que se aprecia en imagen anterior.
+
+\vspace{1em}
+
+\hspace{20pt}
+A su vez en la interfaz de \textit{Elastic} se recibe el mensaje que un agente nuevo a sido incorporado correctamente al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-27.png}
+    
+\vspace{0.1em}
+    
+    Fig. 124: Mensaje de incorporación de un nuevo agente.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras esto se selecciona \textit{Add the integration} para integrar la VM \textit{Kali Linux - DMZ1} al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-40.png}
+    
+\vspace{0.1em}
+    
+    Fig. 125: Estadisticas de agente conectado a \textit{Elastic} para VM \textit{Kali Linux - DMZ1}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION C %%%%%
+\newsubsection{c) Incorporación de VM \textit{Debian TPOT - DMZ2} como agente de \textit{Elastic Defender}}
+
+\vspace{1em}
+
+\hspace{20pt}
+Para agregar la VM \textit{Kali Linux - DMZ1} como agente de \textit{Elastic} se dirige al menú izquierdo de \textit{Elastic}, en la ruta \textbf{\textit{Management -> Fleet}}. Desde esta pantalla se selecciona \textit{Add agent} igual que en la incorporación anterior.
+
+\vspace{1em}
+
+\hspace{20pt}
+Se selecciona la opción de \textit{Linux Tar} en el apartado \textit{Install Elastic Agent on your host}. Se presentará un script con el que realizar la instalación de un agente en sistemas operativos Linux bajo descompresión de ficheros \textit{tar.gz}. Esto debido a que para la instalación en distribución Debian mediante gestor de paquetes DEB, \textit{Elastic} indica mediante un mensaje de advertencia que se recomienda la instalación descrita anteriormente para tener la posibilidad de actualziar el agente mediante \textit{Fleet}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-35.png}
+    
+\vspace{0.1em}
+    
+    Fig. 126: Mensaje de advertencia en instalación mediante gestor de paquetes DEB.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-36.png}
+    
+\vspace{0.1em}
+    
+    Fig. 127: Script para instalación de agente en Linux
+\end{center}
+
+\vspace{2em}
+
+
+\hspace{20pt}
+Luego, desde terminal en la máquina \textit{Debian TPOT - DMZ2} se ejecuta el script creado anteriormente por \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-37.png}
+    
+\vspace{0.1em}
+    
+    Fig. 128: Ejecución de instalación de Elastic-Agent.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+ Si la instalación de \textit{Elastic-Agent} se realiza de forma correcta, se recibirá en el output de consola el mensaje \textit{Elastic Agent has been successfully installed}, tal como el que se aprecia en imagen anterior.
+
+\vspace{1em}
+
+\hspace{20pt}
+A su vez en la interfaz de \textit{Elastic} se recibe el mensaje que un agente nuevo a sido incorporado correctamente al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-38.png}
+    
+\vspace{0.1em}
+    
+    Fig. 129: Mensaje de incorporación de un nuevo agente.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Tras esto se selecciona \textit{Add the integration} para integrar la VM \textit{Debian TPOT - DMZ2} al sistema.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/elas1-41.png}
+    
+\vspace{0.1em}
+    
+    Fig. 130: Estadisticas de agente conectado a \textit{Elastic} para VM \textit{Debian TPOT - DMZ2}.
+\end{center}
+
+\vspace{2em}
+
+%%%%% SUBSECTION D %%%%%
+\newsubsection{d) Agentes incorporados a \textit{Elastic Defender}}
+
+\vspace{1em}
+
+\hspace{20pt}
+A continuación se presentan las tres máquinas virtuales presentes en la infraestructura incorporadas como agentes del Endpoint de \textit{Elastic}.
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-42.png}
+    
+\vspace{0.1em}
+    
+    Fig. 131: Visualización de endpoints de \textit{Elastic}.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 4 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{4.  Incorporación de políticas de agentes}
+
+\vspace{1em}
+
+\hspace{20pt}
+Con la finalidad de monitorear los servicios instalados en las máquinas virtuales de las redes \textit{DMZ1} y \textit{DMZ2} se incoporan ciertas políticas de agentes. Para esto se navega a la ruta del menú izquierdo de \textit{Elastic} \textbf{\textit{Management -> Fleet}}, apartado \textit{Agent policies}. Aquí se selecciona la política de agente de nombre \textit{My first agent policy}:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-43.png}
+    
+\vspace{0.1em}
+    
+    Fig. 132: Políticas de agentes en \textit{Elastic}.
+\end{center}
+
+\vspace{2em}
+
+\hspace{20pt}
+Se selecciona la opción \textit{Add integration} para realizar integración de las apis \textit{Suricata} y \textit{Apache HTTP Server} como partes de la actual política de agente:
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-45.png}
+    
+\vspace{0.1em}
+    
+    Fig. 133: Configuración de \textit{Suricata} como política de agente.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=10cm]{img/elas1-46.png}
+    
+\vspace{0.1em}
+    
+    Fig. 134: Configuración de \textit{Apache HTTP Server} como política de agente.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/elas1-47.png}
+    
+\vspace{0.1em}
+    
+    Fig. 135: Integración de \textit{Suricata} y \textit{Apache HTTP Server} a \textit{My first agent policy}.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 10 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{X.  Pruebas realizadas a la infraestructura}
+
+\vspace{2em}
+
+\hspace{20pt}
+A continuación se presentan una serie de imagenes mostrando las pruebas realizadas luego del montaje de la infraestructura, con el fin de corroborar el funcionamiento de esta.
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Conexión a internet desde redes internas}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 136: Conexión a internet desde VM \textit{Windows 10 - LAN}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-1.png}
+    
+\vspace{0.1em}
+    
+    Fig. 137: Conexión a internet desde VM \textit{Kali Linux - DMZ1}.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-3.png}
+    
+\vspace{0.1em}
+    
+    Fig. 138: Conexión a internet desde VM \textit{Debian TPOT - DMZ2}.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 2 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{2.  Visualización de servicios desde red WAN por NAT interno}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=11cm]{img/X1-4.png}
+    
+\vspace{0.1em}
+    
+    Fig. 139: Conexión a servidor apache de red \textit{DMZ1} desde red local por NAT a IP 192.168.1.127:8888.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-5.png}
+    
+\vspace{0.1em}
+    
+    Fig. 140: Conexión a servidor Debian de red \textit{DMZ2} desde red local por NAT a IP 192.168.1.127:64294.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-6.png}
+    
+\vspace{0.1em}
+    
+    Fig. 141: Menú principal de servidor debian en IP 192.168.1.127:64294.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-7.png}
+    
+\vspace{0.1em}
+    
+    Fig. 142: Conexión a servidor T-POT de red \textit{DMZ1} desde red local por NAT a IP 192.168.1.127:64297.
+\end{center}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=12cm]{img/X1-8.png}
+    
+\vspace{0.1em}
+    
+    Fig. 143: Visualización de Kibana perteneciente a T-POT desde IP 192.168.1.127:64297.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 3 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{3.  Conexión fallida desde red DMZ2 hacia redes internas}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=11cm]{img/X1-9.png}
+    
+\vspace{0.1em}
+    
+    Fig. 144: Peticiones curl y ping fallidas desde host 192.168.250.250 hacia dispositivos pertenecientes a redes LAN y DMZ1.
+\end{center}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 4 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{4.  Acceso a Elastic desde VM Windows 10 - LAN}
+
+\vspace{2em}
+
+\begin{center}
+    \includegraphics[width=11cm]{img/X1-10.png}
+    
+\vspace{0.1em}
+    
+    Fig. 145: Visualización de Elastic desde VM Windows 10 - LAN.
+\end{center}
+
+\newpage
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% CHAPTER 11 %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newchapter{XI.   Requisitos de la práctica}
+
+\vspace{2em}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION 1 %%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\newsection{1.  Requisitos}
+
+\vspace{1em}
+
+\begin{enumerate}
+    \item Creación de un firewall pfSense en bridge al router de casa, que conecte 3 redes internas llamadas LAN, DMZ1 y DMZ2.
+    \newline
+    \newline
+    \textbf{\textit{"Se realiza el montaje de 3 redes desde sistema pfSense: LAN, DMZ1 y DMZ2. Cada una posee diferentes reglas de firewall y filtros de MAC para sus dispositivos."}}
+    \newline
+    \item Un equipo W10 en LAN, un stack ELK en DMZ1 y un grupo de honeypots en DMZ2.
+    \newline
+    \newline
+    \textbf{\textit{"En la red LAN se monta un equipo W10. En la red DMZ1 se monta un equipo con Kali Linux del cual se ejecuta un servidor apache. En la red DMZ2 se monta un equipo con Debian, en el cual se encuentra instalada la instancia del honeypot T-POT. El servicio ELK Elastic se obtiene desde el cloud de AWS."}}
+    \newline
+    \item Transmitir los logs de los honeypots al ELK stack, pero los honeypots no deben tener acceso a las otras redes (solo para transmitir logs) pero los honeypots deben ser accesible desde la red WAN (reglas de firewall y portforwarding hacia los honeypots).
+    \newline
+    \newline
+    \textbf{\textit{"Los servicios de TPOT son accesibles desde la red WAN gracias a la configuración de portforwarding realizada en pfSense. Desde la red DMZ2 no se tiene acceso a las redes LAN y DMZ1 (las peticiones de ping y curl hacia servicios internos no tienen respuesta). Las reglas y condiciones planteadas en el SIEM permiten en primera instancia la recolección de logs desde los servicios establecidos en las redes DMZ1 y DMZ2, pero se debe realizar una configuración en profundidad para lograr recopilar toda la información proveniente de estos y configurar en detalle la recolección de todos los logs."}}
+    \newline
+    \item El servidor ELK debe almacenar y poder visualizar los diferentes logs de los honeypots.
+    \newline
+    \newline
+    \textbf{\textit{"El servidor ELK montado en la nube en primera instancia no gestiona los logs, ya que falta la habilitación de Kibana en su máximo esplendor, con gestión de gráficos y recepción correcta de los logs provenientes de los servicios de las redes DMZ1 y DMZ2."}}
+    \newpage
+    \item El W10 debe poder conectarse a ELK vía Kibana.
+    \newline
+    \newline
+    \textbf{\textit{"La máquina Windows 10 de la red LAN esta conectada a la instancia de Elastic montada en AWS cloud, y se puede gestionar el SIEM en su totalidad desde aquí. El resto de acciones que son necesarias para el funcionamiento por completo del SIEM montado en Elastic implican el estudiar mas introspectivamente el funcionamiento y la gestión que se puede realizar desde Kibana hacia los servicios establecidos en una red, con la finalidad de obtener mejores resultados a la hora de plantear la información de estos en este sistema."}}
+    \newline
+\end{enumerate}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%          END CONTENTS         %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
