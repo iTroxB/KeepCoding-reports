@@ -1,0 +1,38 @@
+Código trabajado desde la página web https://jwt.io/
+
+
+###################
+##### ENCODED #####
+###################
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiRG9uIFBlcGl0byBkZSBsb3MgcGFsb3RlcyIsInJvbCI6ImlzTm9ybWFsIiwiaWF0IjoxNjY3OTMzNTMzfQ.gfhw0dDxp6oixMLXXRP97W4TDTrv0y7B5YjD0U8ixrE
+
+
+
+###################
+##### DECODED #####
+###################
+
+
+##### HEADER #####
+
+{
+  "typ": "JWT",
+  "alg": "HS256"
+}
+
+##### PAYLOAD #####
+
+{
+  "usuario": "Don Pepito de los palotes",
+  "rol": "isNormal",
+  "iat": 1667933533
+}
+
+##### VERIFY SIGNATURE #####
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  
+)
