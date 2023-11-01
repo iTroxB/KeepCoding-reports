@@ -1,10 +1,10 @@
-# KeepCoding-reports
+# **KeepCoding reports**
 
 Repository where my reports made in the different modules of the bootcamp "Cybersecurity Full Stack" taken at KeepCoding are stored.<br>
 
 ![KP-logo](./img/kp-bcp.jpg)  
 
-### Modules
+### **Modules**
 
 - Introduction to Cybersecurity 
 - Cryptography
